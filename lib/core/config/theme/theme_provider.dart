@@ -6,33 +6,57 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeMode get themeMode => _themeMode;
 
-  // Material 3 color schemes
+  // Pastel blue seed color
+  static const Color pastelBlue = Color(0xFFA7C7E7);
+
   static final lightColorScheme = ColorScheme.fromSeed(
-    seedColor: Colors.blue,
+    seedColor: pastelBlue,
     brightness: Brightness.light,
   );
 
   static final darkColorScheme = ColorScheme.fromSeed(
-    seedColor: Colors.blue,
+    seedColor: pastelBlue,
     brightness: Brightness.dark,
   );
 
-  // Material 3 themes
   ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
     colorScheme: lightColorScheme,
     brightness: Brightness.light,
-    // Material 3 specific configurations
-    appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      elevation: 0,
+      backgroundColor: lightColorScheme.surface,
+      foregroundColor: lightColorScheme.onSurface,
+    ),
     cardTheme: CardTheme(
       elevation: 0,
+      color: lightColorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: lightColorScheme.primaryContainer,
+        foregroundColor: lightColorScheme.onPrimaryContainer,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        backgroundColor: lightColorScheme.primary,
+        foregroundColor: lightColorScheme.onPrimary,
         elevation: 0,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: lightColorScheme.surfaceContainerHighest,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
       ),
     ),
   );
@@ -41,17 +65,40 @@ class ThemeProvider extends ChangeNotifier {
     useMaterial3: true,
     colorScheme: darkColorScheme,
     brightness: Brightness.dark,
-    // Material 3 specific configurations
-    appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      elevation: 0,
+      backgroundColor: darkColorScheme.surface,
+      foregroundColor: darkColorScheme.onSurface,
+    ),
     cardTheme: CardTheme(
       elevation: 0,
+      color: darkColorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: darkColorScheme.primaryContainer,
+        foregroundColor: darkColorScheme.onPrimaryContainer,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        backgroundColor: darkColorScheme.primary,
+        foregroundColor: darkColorScheme.onPrimary,
         elevation: 0,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: darkColorScheme.surfaceContainerHighest,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
       ),
     ),
   );

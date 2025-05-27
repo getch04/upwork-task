@@ -44,6 +44,9 @@ dependencies:
   rive: ^0.13.20
   google_fonts: ^6.2.1
   flutter_svg: ^2.1.0
+  animations: ^2.0.11
+  flutter_animate: ^4.5.2
+  font_awesome_flutter: ^10.8.0
 
 dev_dependencies:
   flutter_test:
