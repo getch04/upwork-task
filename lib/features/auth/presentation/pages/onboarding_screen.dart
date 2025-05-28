@@ -31,21 +31,21 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       title: "Express your\nmoods with\nstyle",
       faces: [
         MoodFaceData(
-          color: Color(0xFFA9C48A),
+          color: const Color(0xFFA9C48A),
           label: 'Disgust',
           faceType: MoodFaceType.disgust,
           labelOffset: const Offset(-24, -24),
           labelAngle: -0.18,
         ),
         MoodFaceData(
-          color: Color(0xFFC3E2D2),
+          color: const Color(0xFFC3E2D2),
           label: 'Fear',
           faceType: MoodFaceType.fear,
           labelOffset: const Offset(24, -24),
           labelAngle: 0.18,
         ),
         MoodFaceData(
-          color: Color(0xFFF7D6E0),
+          color: const Color(0xFFF7D6E0),
           label: 'Happiness',
           faceType: MoodFaceType.happiness,
           labelOffset: const Offset(48, -12),
@@ -57,14 +57,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       title: "Your daily\nmood\ncompanion",
       faces: [
         MoodFaceData(
-          color: Color(0xFFB6D0E2),
+          color: const Color(0xFFB6D0E2),
           label: 'Calm',
           faceType: MoodFaceType.happiness,
           labelOffset: const Offset(-24, -24),
           labelAngle: -0.18,
         ),
         MoodFaceData(
-          color: Color(0xFFE8D5C4),
+          color: const Color(0xFFE8D5C4),
           label: 'Surprise',
           faceType: MoodFaceType.fear,
           labelOffset: const Offset(24, -24),
@@ -76,21 +76,21 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       title: "Track your\nemotional\njourney",
       faces: [
         MoodFaceData(
-          color: Color(0xFFE6C3E2),
+          color: const Color(0xFFE6C3E2),
           label: 'Joy',
           faceType: MoodFaceType.happiness,
           labelOffset: const Offset(-24, -24),
           labelAngle: -0.18,
         ),
         MoodFaceData(
-          color: Color(0xFFA9D4F5),
+          color: const Color(0xFFA9D4F5),
           label: 'Peace',
           faceType: MoodFaceType.happiness,
           labelOffset: const Offset(24, -24),
           labelAngle: 0.18,
         ),
         MoodFaceData(
-          color: Color(0xFFFFC3A0),
+          color: const Color(0xFFFFC3A0),
           label: 'Love',
           faceType: MoodFaceType.happiness,
           labelOffset: const Offset(0, 90),
@@ -153,6 +153,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Stack(
         children: [
@@ -203,153 +204,129 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       child: Column(
                         children: [
                           Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 6,
-                                ),
-                                child: Stack(
-                                  children: [
-                                    // Enhanced paper background
-                                    Positioned.fill(
-                                          child: CustomPaint(
-                                            painter: _PaperBackgroundPainter(
-                                              backgroundColor: colorScheme
-                                                  .primary
-                                                  .withOpacity(0.05),
-                                              strokeColor: colorScheme.primary
-                                                  .withOpacity(0.1),
-                                            ),
-                                          ),
-                                        )
-                                        .animate()
-                                        .scale(
-                                          begin: const Offset(0.95, 0.95),
-                                          end: const Offset(1.0, 1.0),
-                                          duration: 600.ms,
-                                          curve: Curves.easeOutQuint,
-                                        )
-                                        .fadeIn(duration: 400.ms),
-
-                                    // Animated background shapes with enhanced animation
-                                    Positioned.fill(
-                                      child: CustomPaint(
-                                            painter: _TitleBackgroundPainter(
-                                              color: colorScheme.primary
-                                                  .withOpacity(0.07),
-                                            ),
-                                          )
-                                          .animate(
-                                            onPlay:
-                                                (controller) =>
-                                                    controller.repeat(),
-                                          )
-                                          .scale(
-                                            duration: 3.seconds,
-                                            begin: const Offset(1, 1),
-                                            end: const Offset(1.1, 1.1),
-                                            curve: Curves.easeInOut,
-                                          )
-                                          .rotate(
-                                            duration: 8.seconds,
-                                            begin: -0.02,
-                                            end: 0.02,
-                                          ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 6,
+                            ),
+                            child: Stack(
+                              children: [
+                                // Enhanced paper background
+                                Positioned.fill(
+                                  child: CustomPaint(
+                                    painter: _PaperBackgroundPainter(
+                                      backgroundColor:
+                                          colorScheme.primary.withOpacity(0.05),
+                                      strokeColor:
+                                          colorScheme.primary.withOpacity(0.1),
                                     ),
+                                  ),
+                                )
+                                    .animate()
+                                    .scale(
+                                      begin: const Offset(0.95, 0.95),
+                                      end: const Offset(1.0, 1.0),
+                                      duration: 600.ms,
+                                      curve: Curves.easeOutQuint,
+                                    )
+                                    .fadeIn(duration: 400.ms),
 
-                                    // Title text with enhanced animations
-                                    Center(
-                                      child: ShaderMask(
-                                        shaderCallback:
-                                            (bounds) => LinearGradient(
-                                              colors: [
-                                                colorScheme.primary,
-                                                colorScheme.tertiary,
-                                                colorScheme.secondary,
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ).createShader(bounds),
-                                        child: Text(
-                                          'MoodBoard',
-                                          style: TextStyle(
-                                            fontFamily: 'Serif',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 42,
-                                            color: Colors.white,
-                                            letterSpacing: 1.2,
-                                            height: 1.1,
-                                            shadows: [
-                                              Shadow(
-                                                color: colorScheme.primary
-                                                    .withOpacity(0.5),
-                                                offset: const Offset(0, 4),
-                                                blurRadius: 15,
-                                              ),
-                                            ],
+                                // Animated background shapes
+                                Positioned.fill(
+                                  child: CustomPaint(
+                                    painter: _TitleBackgroundPainter(
+                                      color:
+                                          colorScheme.primary.withOpacity(0.07),
+                                    ),
+                                  )
+                                      .animate(
+                                        onPlay: (controller) =>
+                                            controller.repeat(),
+                                      )
+                                      .scale(
+                                        duration: 3.seconds,
+                                        begin: const Offset(1, 1),
+                                        end: const Offset(1.1, 1.1),
+                                        curve: Curves.easeInOut,
+                                      )
+                                      .rotate(
+                                        duration: 8.seconds,
+                                        begin: -0.02,
+                                        end: 0.02,
+                                      ),
+                                ),
+
+                                // Title text
+                                Center(
+                                  child: ShaderMask(
+                                    shaderCallback: (bounds) => LinearGradient(
+                                      colors: [
+                                        colorScheme.primary,
+                                        colorScheme.tertiary,
+                                        colorScheme.secondary,
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ).createShader(bounds),
+                                    child: Text(
+                                      'MoodBoard',
+                                      style: textTheme.displayMedium?.copyWith(
+                                        color: Colors.white,
+                                        letterSpacing: 1.2,
+                                        height: 1.1,
+                                        shadows: [
+                                          Shadow(
+                                            color: colorScheme.primary
+                                                .withOpacity(0.5),
+                                            offset: const Offset(0, 4),
+                                            blurRadius: 15,
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              )
-                              .animate()
-                              .fadeIn(duration: 800.ms)
-                              .slideY(
+                              ],
+                            ),
+                          ).animate().fadeIn(duration: 800.ms).slideY(
                                 begin: 0.3,
                                 end: 0,
                                 duration: 800.ms,
                                 curve: Curves.easeOutCubic,
                               ),
-
-                          // const SizedBox(height: 8),
-
-                          // Subtitle with animated underline
                           Column(
-                                children: [
-                                  Text(
-                                    'Express yourself',
-                                    style: TextStyle(
-                                      fontFamily: 'Serif',
-                                      fontSize: 18,
-                                      color: colorScheme.onPrimary.withOpacity(
-                                        0.8,
-                                      ),
-                                      letterSpacing: 0.5,
-                                    ),
+                            children: [
+                              Text(
+                                'Express yourself',
+                                style: textTheme.titleLarge?.copyWith(
+                                  color: colorScheme.onPrimary.withOpacity(0.8),
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                width: 120,
+                                height: 2,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      colorScheme.primary.withOpacity(0),
+                                      colorScheme.primary.withOpacity(0.7),
+                                      colorScheme.primary.withOpacity(0),
+                                    ],
                                   ),
-                                  const SizedBox(height: 8),
-                                  Container(
-                                        width: 120,
-                                        height: 2,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              colorScheme.primary.withOpacity(
-                                                0,
-                                              ),
-                                              colorScheme.primary.withOpacity(
-                                                0.7,
-                                              ),
-                                              colorScheme.primary.withOpacity(
-                                                0,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                      .animate(
-                                        onPlay:
-                                            (controller) => controller.repeat(),
-                                      )
-                                      .slideX(
-                                        begin: -1.5,
-                                        end: 1.5,
-                                        duration: 2.seconds,
-                                        curve: Curves.easeInOut,
-                                      ),
-                                ],
+                                ),
                               )
+                                  .animate(
+                                    onPlay: (controller) => controller.repeat(),
+                                  )
+                                  .slideX(
+                                    begin: -1.5,
+                                    end: 1.5,
+                                    duration: 2.seconds,
+                                    curve: Curves.easeInOut,
+                                  ),
+                            ],
+                          )
                               .animate()
                               .fadeIn(duration: 600.ms, delay: 200.ms)
                               .slideY(
@@ -359,19 +336,17 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                 delay: 200.ms,
                                 curve: Curves.easeOutCubic,
                               ),
-
                           const SizedBox(height: 14),
                         ],
                       ),
                     ),
 
-                    // PageView with enhanced transitions
+                    // PageView
                     Expanded(
                       child: PageView.builder(
                         controller: _pageController,
                         onPageChanged: (index) {
                           setState(() => _currentPage = index);
-                          // Reset and restart animations for the new page
                           _facesController.reset();
                           _centerController.reset();
                           _startStaggered();
@@ -379,12 +354,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         itemCount: _pages.length,
                         itemBuilder: (context, index) {
                           final page = _pages[index];
-                          return _buildPage(page);
+                          return _buildPage(page, context);
                         },
                       ),
                     ),
 
-                    // Enhanced page indicator
+                    // Page indicator
                     AnimatedBuilder(
                       animation: _centerController,
                       builder: (context, child) {
@@ -397,24 +372,24 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         controller: _pageController,
                         count: _pages.length,
                         effect: smooth.WormEffect(
-                          dotHeight: 8,
-                          dotWidth: 8,
+                          dotHeight: 10,
+                          dotWidth: 10,
                           type: smooth.WormType.thin,
-                          activeDotColor: Color(0xFF23284B),
-                          dotColor: Color(0xFFD9D9D9),
+                          activeDotColor: colorScheme.onPrimary,
+                          dotColor: colorScheme.onPrimary.withOpacity(0.3),
                           strokeWidth: 1,
                           paintStyle: PaintingStyle.fill,
                         ),
                       ),
                     ).animate().scale(
-                      duration: 400.ms,
-                      curve: Curves.easeOutQuint,
-                      delay: 200.ms,
-                    ),
+                          duration: 400.ms,
+                          curve: Curves.easeOutQuint,
+                          delay: 200.ms,
+                        ),
 
                     const SizedBox(height: 24),
 
-                    // Enhanced buttons animations
+                    // Buttons
                     AnimatedBuilder(
                       animation: _buttonController,
                       builder: (context, child) {
@@ -429,52 +404,44 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       },
                       child: Column(
                         children: [
-                          // Next/Get Started button with enhanced animations
                           ModernButton(
                             isLoading: false,
                             onPressed: () {
                               if (_currentPage < _pages.length - 1) {
                                 _pageController.nextPage(
-                                  duration: Duration(milliseconds: 600),
+                                  duration: const Duration(milliseconds: 600),
                                   curve: Curves.easeInOut,
                                 );
                               } else {
                                 context.go('/login');
                               }
                             },
-                            label:
-                                _currentPage < _pages.length - 1
-                                    ? 'Next'
-                                    : 'Get Started',
+                            label: _currentPage < _pages.length - 1
+                                ? 'Next'
+                                : 'Get Started',
                           ),
                           const SizedBox(height: 10),
-
-                          // Skip button with enhanced animations
                           InkWell(
-                                onTap: () => context.go('/login'),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      'Skip',
-                                      style: TextStyle(
-                                        fontFamily: 'Serif',
-                                        fontSize: 16,
-                                        color: colorScheme.onPrimary
-                                            .withOpacity(0.8),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 14,
-                                      color: colorScheme.onPrimary.withOpacity(
-                                        0.8,
-                                      ),
-                                    ),
-                                  ],
+                            onTap: () => context.go('/login'),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Skip',
+                                  style: textTheme.titleMedium?.copyWith(
+                                    color:
+                                        colorScheme.onPrimary.withOpacity(0.8),
+                                  ),
                                 ),
-                              )
+                                const SizedBox(width: 8),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 14,
+                                  color: colorScheme.onPrimary.withOpacity(0.8),
+                                ),
+                              ],
+                            ),
+                          )
                               .animate()
                               .fadeIn(duration: 400.ms, delay: 200.ms)
                               .slideX(
@@ -498,200 +465,196 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     );
   }
 
-  Widget _buildPage(OnboardingPage page) {
+  Widget _buildPage(OnboardingPage page, BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Center(
-          child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                if (_currentPage == 2) ...[
-                  // Enhanced floating bubbles with more dynamic animations
-                  Positioned(
-                    top: 20,
-                    left: 40,
-                    child: _FloatingBubble(
-                      color: Color(0xFFE6C3E2),
-                      size: 24,
-                      animation: CurvedAnimation(
-                        parent: _floatController,
-                        curve: Curves.easeInOut,
-                      ),
-                    ).animate().scale(
+      child: SingleChildScrollView(
+        child: Stack(
+          children: [
+            if (_currentPage == 2) ...[
+              Positioned(
+                top: 20,
+                left: 40,
+                child: _FloatingBubble(
+                  color: const Color(0xFFE6C3E2),
+                  size: 24,
+                  animation: CurvedAnimation(
+                    parent: _floatController,
+                    curve: Curves.easeInOut,
+                  ),
+                ).animate().scale(
                       duration: 600.ms,
                       curve: Curves.easeOutQuint,
                       delay: 200.ms,
                     ),
+              ),
+              Positioned(
+                top: 100,
+                right: 30,
+                child: _FloatingBubble(
+                  color: const Color(0xFFA9D4F5),
+                  size: 32,
+                  animation: CurvedAnimation(
+                    parent: _floatController,
+                    curve: const Interval(0.2, 0.8, curve: Curves.easeInOut),
                   ),
-                  Positioned(
-                    top: 100,
-                    right: 30,
-                    child: _FloatingBubble(
-                      color: Color(0xFFA9D4F5),
-                      size: 32,
-                      animation: CurvedAnimation(
-                        parent: _floatController,
-                        curve: Interval(0.2, 0.8, curve: Curves.easeInOut),
-                      ),
-                    ).animate().scale(
+                ).animate().scale(
                       duration: 600.ms,
                       curve: Curves.easeOutQuint,
                       delay: 400.ms,
                     ),
+              ),
+              Positioned(
+                bottom: 120,
+                left: 60,
+                child: _FloatingBubble(
+                  color: const Color(0xFFFFC3A0),
+                  size: 28,
+                  animation: CurvedAnimation(
+                    parent: _floatController,
+                    curve: const Interval(0.4, 1.0, curve: Curves.easeInOut),
                   ),
-                  Positioned(
-                    bottom: 120,
-                    left: 60,
-                    child: _FloatingBubble(
-                      color: Color(0xFFFFC3A0),
-                      size: 28,
-                      animation: CurvedAnimation(
-                        parent: _floatController,
-                        curve: Interval(0.4, 1.0, curve: Curves.easeInOut),
-                      ),
-                    ).animate().scale(
+                ).animate().scale(
                       duration: 600.ms,
                       curve: Curves.easeOutQuint,
                       delay: 600.ms,
                     ),
-                  ),
-                ],
-                // Rest of the page content with enhanced animations
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              ),
+            ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          if (page.faces.isNotEmpty)
-                            _AnimatedFace(
-                              controller: _facesController,
-                              floatController: _floatController,
-                              interval: 0.0,
-                              child: _MoodFace(
-                                color: page.faces[0].color,
-                                label: page.faces[0].label,
-                                faceType: page.faces[0].faceType,
-                                labelOffset: page.faces[0].labelOffset,
-                                labelAngle: page.faces[0].labelAngle,
-                              ),
-                            ).animate().scale(
+                      if (page.faces.isNotEmpty)
+                        _AnimatedFace(
+                          controller: _facesController,
+                          floatController: _floatController,
+                          interval: 0.0,
+                          child: _MoodFace(
+                            color: page.faces[0].color,
+                            label: page.faces[0].label,
+                            faceType: page.faces[0].faceType,
+                            labelOffset: page.faces[0].labelOffset,
+                            labelAngle: page.faces[0].labelAngle,
+                          ),
+                        ).animate().scale(
                               duration: 600.ms,
                               curve: Curves.easeOutQuint,
                             ),
-                          if (page.faces.length > 1)
-                            _AnimatedFace(
-                              controller: _facesController,
-                              floatController: _floatController,
-                              interval: 0.15,
-                              child: _MoodFace(
-                                color: page.faces[1].color,
-                                label: page.faces[1].label,
-                                faceType: page.faces[1].faceType,
-                                labelOffset: page.faces[1].labelOffset,
-                                labelAngle: page.faces[1].labelAngle,
-                              ),
-                            ).animate().scale(
+                      if (page.faces.length > 1)
+                        _AnimatedFace(
+                          controller: _facesController,
+                          floatController: _floatController,
+                          interval: 0.15,
+                          child: _MoodFace(
+                            color: page.faces[1].color,
+                            label: page.faces[1].label,
+                            faceType: page.faces[1].faceType,
+                            labelOffset: page.faces[1].labelOffset,
+                            labelAngle: page.faces[1].labelAngle,
+                          ),
+                        ).animate().scale(
                               duration: 600.ms,
                               curve: Curves.easeOutQuint,
                               delay: 100.ms,
                             ),
-                        ],
-                      ),
-                      const SizedBox(height: 32),
-                      AnimatedBuilder(
-                        animation: _centerController,
-                        builder: (context, child) {
-                          final offset = 40 * (1 - _centerController.value);
-                          return Opacity(
-                            opacity: _centerController.value,
-                            child: Transform.translate(
-                              offset: Offset(0, offset),
-                              child: child,
-                            ),
-                          );
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                                  Icons.arrow_downward,
-                                  color: Color(0xFFB6D0E2),
-                                  size: 32,
-                                )
-                                .animate(
-                                  onPlay: (controller) => controller.repeat(),
-                                )
-                                .moveY(
-                                  begin: -4,
-                                  end: 4,
-                                  duration: 1.seconds,
-                                  curve: Curves.easeInOut,
-                                ),
-                            const SizedBox(height: 16),
-                            Text(
-                              page.title,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: 'Serif',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 32,
-                                color: Color(0xFF23284B),
-                                height: 1.2,
-                              ),
-                            ).animate().fadeIn(duration: 400.ms, delay: 200.ms),
-                            const SizedBox(height: 16),
-                            SizedBox(
-                                  width: 80,
-                                  height: 12,
-                                  child: CustomPaint(
-                                    painter: _SquigglePainter(),
-                                  ),
-                                )
-                                .animate()
-                                .scaleX(
-                                  begin: 0.6,
-                                  end: 1.0,
-                                  duration: 600.ms,
-                                  curve: Curves.easeOutQuint,
-                                )
-                                .fadeIn(duration: 400.ms),
-                          ],
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  AnimatedBuilder(
+                    animation: _centerController,
+                    builder: (context, child) {
+                      final offset = 40 * (1 - _centerController.value);
+                      return Opacity(
+                        opacity: _centerController.value,
+                        child: Transform.translate(
+                          offset: Offset(0, offset),
+                          child: child,
                         ),
-                      ),
-                      const SizedBox(height: 32),
-                      if (page.faces.length > 2)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _AnimatedFace(
-                              controller: _facesController,
-                              floatController: _floatController,
-                              interval: 0.3,
-                              child: _MoodFace(
-                                color: page.faces[2].color,
-                                label: page.faces[2].label,
-                                faceType: page.faces[2].faceType,
-                                labelOffset: page.faces[2].labelOffset,
-                                labelAngle: page.faces[2].labelAngle,
-                              ),
-                            ).animate().scale(
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.arrow_downward,
+                          color: colorScheme.onPrimary,
+                          size: 32,
+                        )
+                            .animate(
+                              onPlay: (controller) => controller.repeat(),
+                            )
+                            .moveY(
+                              begin: -4,
+                              end: 4,
+                              duration: 1.seconds,
+                              curve: Curves.easeInOut,
+                            ),
+                        const SizedBox(height: 16),
+                        Text(
+                          page.title,
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineLarge?.copyWith(
+                            color: colorScheme.onSurface,
+                            height: 1.2,
+                          ),
+                        ).animate().fadeIn(duration: 400.ms, delay: 200.ms),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: 80,
+                          height: 12,
+                          child: CustomPaint(
+                            painter:
+                                _SquigglePainter(color: colorScheme.primary),
+                          ),
+                        )
+                            .animate()
+                            .scaleX(
+                              begin: 0.6,
+                              end: 1.0,
+                              duration: 600.ms,
+                              curve: Curves.easeOutQuint,
+                            )
+                            .fadeIn(duration: 400.ms),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  if (page.faces.length > 2)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _AnimatedFace(
+                          controller: _facesController,
+                          floatController: _floatController,
+                          interval: 0.3,
+                          child: _MoodFace(
+                            color: page.faces[2].color,
+                            label: page.faces[2].label,
+                            faceType: page.faces[2].faceType,
+                            labelOffset: page.faces[2].labelOffset,
+                            labelAngle: page.faces[2].labelAngle,
+                          ),
+                        ).animate().scale(
                               duration: 600.ms,
                               curve: Curves.easeOutQuint,
                               delay: 200.ms,
                             ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              ],
+                      ],
+                    ),
+                ],
+              ),
             ),
-          ),
-        )
-        .animate()
-        .fadeIn(duration: 600.ms)
-        .slideY(
+          ],
+        ),
+      ),
+    ).animate().fadeIn(duration: 600.ms).slideY(
           begin: 0.3,
           end: 0,
           duration: 600.ms,
@@ -775,13 +738,13 @@ class _MoodFace extends StatelessWidget {
                   BoxShadow(
                     color: Colors.black.withOpacity(0.04),
                     blurRadius: 3,
-                    offset: Offset(0, 1),
+                    offset: const Offset(0, 1),
                   ),
                 ],
               ),
               child: Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Serif',
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
@@ -802,16 +765,14 @@ class _FacePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = Colors.transparent
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3;
-    final facePaint =
-        Paint()
-          ..color = Color(0xFF23284B)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3;
+    final paint = Paint()
+      ..color = Colors.transparent
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3;
+    final facePaint = Paint()
+      ..color = const Color(0xFF23284B)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3;
     final w = size.width;
     final h = size.height;
     // Draw face circle
@@ -923,11 +884,10 @@ class _FacePainter extends CustomPainter {
           facePaint,
         );
         // Hearts
-        final heartPaint =
-            Paint()
-              ..color = Color(0xFFE87EA1)
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 2;
+        final heartPaint = Paint()
+          ..color = const Color(0xFFE87EA1)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2;
         final heartPath = Path();
         heartPath.moveTo(w * 0.78, h * 0.32);
         heartPath.cubicTo(
@@ -975,13 +935,16 @@ class _FacePainter extends CustomPainter {
 }
 
 class _SquigglePainter extends CustomPainter {
+  final Color color;
+
+  _SquigglePainter({required this.color});
+
   @override
   void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = Color(0xFFF7D59C)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3;
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3;
     final path = Path();
     path.moveTo(0, size.height * 0.7);
     path.cubicTo(
@@ -1016,7 +979,7 @@ class _Dot extends StatelessWidget {
       width: isActive ? 12 : 8,
       height: isActive ? 12 : 8,
       decoration: BoxDecoration(
-        color: isActive ? Color(0xFF23284B) : Color(0xFFD9D9D9),
+        color: isActive ? const Color(0xFF23284B) : const Color(0xFFD9D9D9),
         shape: BoxShape.circle,
       ),
     );
@@ -1040,11 +1003,10 @@ class _AnimatedFace extends StatelessWidget {
     return AnimatedBuilder(
       animation: Listenable.merge([controller, floatController]),
       builder: (context, _) {
-        final appear =
-            CurvedAnimation(
-              parent: controller,
-              curve: Interval(interval, 1.0, curve: Curves.easeOutBack),
-            ).value;
+        final appear = CurvedAnimation(
+          parent: controller,
+          curve: Interval(interval, 1.0, curve: Curves.easeOutBack),
+        ).value;
         final float = (1 + 0.04 * (1 - (floatController.value * 2 - 1).abs()));
         final yOffset = (1 - appear) * 60;
         return Opacity(
@@ -1066,10 +1028,9 @@ class _TitleBackgroundPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = color
-          ..style = PaintingStyle.fill;
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
 
     // Draw decorative shapes
     final path = Path();
@@ -1135,25 +1096,23 @@ class _PaperBackgroundPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final backgroundPaint =
-        Paint()
-          ..color = backgroundColor
-          ..style = PaintingStyle.fill;
+    final backgroundPaint = Paint()
+      ..color = backgroundColor
+      ..style = PaintingStyle.fill;
 
-    final strokePaint =
-        Paint()
-          ..color = strokeColor
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1;
+    final strokePaint = Paint()
+      ..color = strokeColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
 
     // Draw background
-    final backgroundPath =
-        Path()..addRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(0, 0, size.width, size.height),
-            Radius.circular(12),
-          ),
-        );
+    final backgroundPath = Path()
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height),
+          const Radius.circular(12),
+        ),
+      );
     canvas.drawPath(backgroundPath, backgroundPaint);
 
     // Draw scrambled lines

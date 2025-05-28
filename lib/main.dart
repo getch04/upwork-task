@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'core/config/language/locale_provider.dart';
@@ -38,26 +37,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lightTheme = Provider.of<ThemeProvider>(context).lightTheme.copyWith(
-          textTheme: GoogleFonts.quicksandTextTheme(
-            Provider.of<ThemeProvider>(context).lightTheme.textTheme,
-          ),
-        );
-
-    final darkTheme = Provider.of<ThemeProvider>(context).darkTheme.copyWith(
-          textTheme: GoogleFonts.quicksandTextTheme(
-            Provider.of<ThemeProvider>(context).darkTheme.textTheme,
-          ),
-        );
-
     return MaterialApp.router(
       routerDelegate: appRouter.routerDelegate,
       routeInformationParser: appRouter.routeInformationParser,
       routeInformationProvider: appRouter.routeInformationProvider,
       debugShowCheckedModeBanner: false,
       title: 'MoodBoard',
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: Provider.of<ThemeProvider>(context).lightTheme,
+      darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
       themeMode: Provider.of<ThemeProvider>(context).themeMode,
       locale: Provider.of<LocaleProvider>(context).locale,
       supportedLocales: const [Locale('en'), Locale('es')],
