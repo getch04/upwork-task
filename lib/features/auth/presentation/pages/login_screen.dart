@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -124,94 +125,88 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildLoginCard(ColorScheme colorScheme, bool isMobile) {
     return Container(
-          padding: EdgeInsets.all(isMobile ? 24 : 32),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: colorScheme.primary.withOpacity(0.2),
-              width: 1.5,
+      padding: EdgeInsets.all(isMobile ? 24 : 32),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: colorScheme.primary.withOpacity(0.2),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withOpacity(0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Welcome Back',
+            style: GoogleFonts.quicksand(
+              fontSize: isMobile ? 30 : 32,
+              fontWeight: FontWeight.bold,
+              color: colorScheme.surface,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: colorScheme.shadow.withOpacity(0.08),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
+          ).animate().fadeIn(duration: 600.ms).slideX(
+                begin: -0.2,
+                end: 0,
+                duration: 600.ms,
+                curve: Curves.easeOutCubic,
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                    'Welcome Back',
-                    style: GoogleFonts.quicksand(
-                      fontSize: isMobile ? 30 : 32,
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.surface,
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .slideX(
-                    begin: -0.2,
-                    end: 0,
-                    duration: 600.ms,
-                    curve: Curves.easeOutCubic,
-                  ),
-              const SizedBox(height: 8),
-              Text(
-                    'Sign in to continue your journey',
-                    style: GoogleFonts.quicksand(
-                      fontSize: isMobile ? 16 : 18,
-                      color: colorScheme.surface,
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 200.ms)
-                  .slideX(
-                    begin: -0.2,
-                    end: 0,
-                    duration: 600.ms,
-                    delay: 200.ms,
-                    curve: Curves.easeOutCubic,
-                  ),
-              SizedBox(height: isMobile ? 24 : 32),
-              _buildLoginForm(colorScheme)
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 400.ms)
-                  .slideY(
-                    begin: 0.2,
-                    end: 0,
-                    duration: 600.ms,
-                    delay: 400.ms,
-                    curve: Curves.easeOutCubic,
-                  ),
-              SizedBox(height: isMobile ? 16 : 24),
-              SocialLoginButtons(colorScheme: colorScheme)
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 600.ms)
-                  .slideY(
-                    begin: 0.2,
-                    end: 0,
-                    duration: 600.ms,
-                    delay: 600.ms,
-                    curve: Curves.easeOutCubic,
-                  ),
-              SizedBox(height: isMobile ? 16 : 24),
-              _buildSignUpLink(colorScheme, isMobile)
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 800.ms)
-                  .scale(
-                    begin: const Offset(0.8, 0.8),
-                    end: const Offset(1, 1),
-                    duration: 600.ms,
-                    delay: 800.ms,
-                    curve: Curves.easeOutCubic,
-                  ),
-            ],
-          ),
-        )
+          const SizedBox(height: 8),
+          Text(
+            'Sign in to continue your journey',
+            style: GoogleFonts.quicksand(
+              fontSize: isMobile ? 16 : 18,
+              color: colorScheme.surface,
+            ),
+          ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideX(
+                begin: -0.2,
+                end: 0,
+                duration: 600.ms,
+                delay: 200.ms,
+                curve: Curves.easeOutCubic,
+              ),
+          SizedBox(height: isMobile ? 24 : 32),
+          _buildLoginForm(colorScheme)
+              .animate()
+              .fadeIn(duration: 600.ms, delay: 400.ms)
+              .slideY(
+                begin: 0.2,
+                end: 0,
+                duration: 600.ms,
+                delay: 400.ms,
+                curve: Curves.easeOutCubic,
+              ),
+          SizedBox(height: isMobile ? 16 : 24),
+          SocialLoginButtons(colorScheme: colorScheme)
+              .animate()
+              .fadeIn(duration: 600.ms, delay: 600.ms)
+              .slideY(
+                begin: 0.2,
+                end: 0,
+                duration: 600.ms,
+                delay: 600.ms,
+                curve: Curves.easeOutCubic,
+              ),
+          SizedBox(height: isMobile ? 16 : 24),
+          _buildSignUpLink(colorScheme, isMobile)
+              .animate()
+              .fadeIn(duration: 600.ms, delay: 800.ms)
+              .scale(
+                begin: const Offset(0.8, 0.8),
+                end: const Offset(1, 1),
+                duration: 600.ms,
+                delay: 800.ms,
+                curve: Curves.easeOutCubic,
+              ),
+        ],
+      ),
+    )
         .animate()
         .fadeIn(duration: 800.ms)
         .scale(
@@ -277,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
           isLoading: _isLoading,
           onPressed: _isLoading ? null : _handleLogin,
           label: 'Sign In',
-          icon: Icons.arrow_forward_ios,
+          icon: FontAwesomeIcons.rightToBracket,
         ),
       ],
     );
@@ -314,13 +309,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
     await Future.delayed(const Duration(seconds: 1));
 
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      setState(() {
-        _error = 'Please enter email and password';
-        _isLoading = false;
-      });
-      return;
-    }
+    // if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    //   setState(() {
+    //     _error = 'Please enter email and password';
+    //     _isLoading = false;
+    //   });
+    //   return;
+    // }
 
     _triggerConfetti();
     await Future.delayed(const Duration(milliseconds: 1500));
@@ -340,10 +335,10 @@ class _FloatingElementsLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pastelBubbles = [
-      _BubbleData(const Offset(80, 120), 60, const Color(0xFFB8D8F8)),
-      _BubbleData(const Offset(320, 200), 40, const Color(0xFFD1E8FF)),
-      _BubbleData(const Offset(60, 500), 50, const Color(0xFFA7C7E7)),
-      _BubbleData(const Offset(300, 600), 70, const Color(0xFFB8D8F8)),
+      const _BubbleData(Offset(80, 120), 60, Color(0xFFB8D8F8)),
+      const _BubbleData(Offset(320, 200), 40, Color(0xFFD1E8FF)),
+      const _BubbleData(Offset(60, 500), 50, Color(0xFFA7C7E7)),
+      const _BubbleData(Offset(300, 600), 70, Color(0xFFB8D8F8)),
     ];
 
     return Stack(
@@ -389,43 +384,43 @@ class _AnimatedSparkle extends StatelessWidget {
     final delay = random.nextInt(2000);
 
     return Animate(
-          effects: [
-            FadeEffect(duration: 800.ms, delay: delay.ms),
-            ScaleEffect(
-              duration: 1200.ms,
-              begin: const Offset(0.6, 0.6),
-              end: const Offset(1.4, 1.4),
-              curve: Curves.easeInOut,
-              delay: delay.ms,
-            ),
-            MoveEffect(
-              begin: Offset(
-                random.nextDouble() * 20 - 10,
-                random.nextDouble() * 20 - 10,
-              ),
-              end: Offset.zero,
-              duration: 1200.ms,
-              delay: delay.ms,
-              curve: Curves.easeOutCubic,
+      effects: [
+        FadeEffect(duration: 800.ms, delay: delay.ms),
+        ScaleEffect(
+          duration: 1200.ms,
+          begin: const Offset(0.6, 0.6),
+          end: const Offset(1.4, 1.4),
+          curve: Curves.easeInOut,
+          delay: delay.ms,
+        ),
+        MoveEffect(
+          begin: Offset(
+            random.nextDouble() * 20 - 10,
+            random.nextDouble() * 20 - 10,
+          ),
+          end: Offset.zero,
+          duration: 1200.ms,
+          delay: delay.ms,
+          curve: Curves.easeOutCubic,
+        ),
+      ],
+      onComplete: (controller) => controller.repeat(reverse: true),
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white.withValues(alpha: 0.7),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withValues(alpha: 0.5),
+              blurRadius: 8,
+              spreadRadius: 1,
             ),
           ],
-          onComplete: (controller) => controller.repeat(reverse: true),
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.7),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.white.withValues(alpha: 0.5),
-                  blurRadius: 8,
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
-          ),
-        )
+        ),
+      ),
+    )
         .animate()
         .fadeIn(
           duration: 600.ms,
@@ -461,67 +456,64 @@ class _AnimatedBubble extends StatelessWidget {
     final floatDuration = Duration(seconds: 6 + random.nextInt(4));
 
     return Animate(
-          effects: [
-            FadeEffect(duration: 1200.ms),
-            ScaleEffect(
-              duration: floatDuration,
-              begin: const Offset(1.0, 1.0),
-              end: const Offset(1.08, 1.08),
-              curve: Curves.easeInOut,
+      effects: [
+        FadeEffect(duration: 1200.ms),
+        ScaleEffect(
+          duration: floatDuration,
+          begin: const Offset(1.0, 1.0),
+          end: const Offset(1.08, 1.08),
+          curve: Curves.easeInOut,
+        ),
+        MoveEffect(
+          begin: const Offset(0, 10),
+          end: const Offset(0, -10),
+          duration: floatDuration,
+          curve: Curves.easeInOut,
+        ),
+      ],
+      onComplete: (controller) => controller.repeat(reverse: true),
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutCubic,
+          width: bubble.radius * 2 * (tapped ? 1.25 : 1.0),
+          height: bubble.radius * 2 * (tapped ? 1.25 : 1.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: bubble.color.withValues(alpha: 0.18),
+            gradient: RadialGradient(
+              colors: [
+                bubble.color.withValues(alpha: 0.24),
+                bubble.color.withValues(alpha: 0.16),
+                bubble.color.withValues(alpha: 0.08),
+              ],
             ),
-            MoveEffect(
-              begin: const Offset(0, 10),
-              end: const Offset(0, -10),
-              duration: floatDuration,
-              curve: Curves.easeInOut,
-            ),
-          ],
-          onComplete: (controller) => controller.repeat(reverse: true),
-          child: GestureDetector(
-            onTap: onTap,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOutCubic,
-              width: bubble.radius * 2 * (tapped ? 1.25 : 1.0),
-              height: bubble.radius * 2 * (tapped ? 1.25 : 1.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
                 color: bubble.color.withValues(alpha: 0.18),
-                gradient: RadialGradient(
-                  colors: [
-                    bubble.color.withValues(alpha: 0.24),
-                    bubble.color.withValues(alpha: 0.16),
-                    bubble.color.withValues(alpha: 0.08),
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: bubble.color.withValues(alpha: 0.18),
-                    blurRadius: 24,
-                    spreadRadius: 2,
-                  ),
-                ],
+                blurRadius: 24,
+                spreadRadius: 2,
               ),
-              child:
-                  tapped
-                      ? Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: bubble.color.withValues(alpha: 0.5),
-                                width: 6,
-                              ),
-                            ),
-                          )
-                          .animate(onPlay: (controller) => controller.repeat())
-                          .shimmer(
-                            duration: 1.seconds,
-                            color: bubble.color.withValues(alpha: 0.3),
-                          )
-                      : null,
-            ),
+            ],
           ),
-        )
+          child: tapped
+              ? Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: bubble.color.withValues(alpha: 0.5),
+                      width: 6,
+                    ),
+                  ),
+                ).animate(onPlay: (controller) => controller.repeat()).shimmer(
+                    duration: 1.seconds,
+                    color: bubble.color.withValues(alpha: 0.3),
+                  )
+              : null,
+        ),
+      ),
+    )
         .animate()
         .fadeIn(
           duration: 800.ms,
