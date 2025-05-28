@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart' as smooth;
+import 'package:upwork_task/features/auth/presentation/widgets/decorative_pane.dart';
+import 'package:upwork_task/features/auth/presentation/widgets/gradient_orb_background.dart';
+import 'package:upwork_task/features/auth/presentation/widgets/modern_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -18,7 +23,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   late final AnimationController _centerController;
   late final AnimationController _buttonController;
   late final AnimationController _floatController;
-  bool _buttonPressed = false;
+  final bool _buttonPressed = false;
   int _currentPage = 0;
 
   final List<OnboardingPage> _pages = [
@@ -40,18 +45,11 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           labelAngle: 0.18,
         ),
         MoodFaceData(
-          color: Color(0xFFF7D59C),
-          label: 'Anger',
-          faceType: MoodFaceType.anger,
-          labelOffset: const Offset(-32, 90),
-          labelAngle: -0.14,
-        ),
-        MoodFaceData(
           color: Color(0xFFF7D6E0),
           label: 'Happiness',
           faceType: MoodFaceType.happiness,
-          labelOffset: const Offset(32, 90),
-          labelAngle: 0.14,
+          labelOffset: const Offset(48, -12),
+          labelAngle: 0.18,
         ),
       ],
     ),
@@ -71,6 +69,32 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           faceType: MoodFaceType.fear,
           labelOffset: const Offset(24, -24),
           labelAngle: 0.18,
+        ),
+      ],
+    ),
+    OnboardingPage(
+      title: "Track your\nemotional\njourney",
+      faces: [
+        MoodFaceData(
+          color: Color(0xFFE6C3E2),
+          label: 'Joy',
+          faceType: MoodFaceType.happiness,
+          labelOffset: const Offset(-24, -24),
+          labelAngle: -0.18,
+        ),
+        MoodFaceData(
+          color: Color(0xFFA9D4F5),
+          label: 'Peace',
+          faceType: MoodFaceType.happiness,
+          labelOffset: const Offset(24, -24),
+          labelAngle: 0.18,
+        ),
+        MoodFaceData(
+          color: Color(0xFFFFC3A0),
+          label: 'Love',
+          faceType: MoodFaceType.happiness,
+          labelOffset: const Offset(0, 90),
+          labelAngle: 0,
         ),
       ],
     ),
@@ -128,152 +152,348 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: const Color(0xFF181C2E),
-      body: SafeArea(
-        child: Center(
-          child: Container(
-            width: size.width * 0.95,
-            height: size.height * 0.97,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(40),
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: 32),
-                // Title
-                AnimatedBuilder(
-                  animation: _titleController,
-                  builder: (context, child) {
-                    final offset = 40 * (1 - _titleController.value);
-                    return Opacity(
-                      opacity: _titleController.value,
-                      child: Transform.translate(
-                        offset: Offset(0, -offset),
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'MoodBoard',
-                    style: TextStyle(
-                      fontFamily: 'Serif',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                      color: Color(0xFF38406A),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Page View
-                Expanded(
-                  child: PageView.builder(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() => _currentPage = index);
-                    },
-                    itemCount: _pages.length,
-                    itemBuilder: (context, index) {
-                      final page = _pages[index];
-                      return _buildPage(page);
-                    },
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Page indicator
-                AnimatedBuilder(
-                  animation: _centerController,
-                  builder: (context, child) {
-                    return Opacity(
-                      opacity: _centerController.value,
-                      child: child,
-                    );
-                  },
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: WormEffect(
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      type: WormType.thin,
-                      activeDotColor: Color(0xFF23284B),
-                      dotColor: Color(0xFFD9D9D9),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Get Started Button
-                AnimatedBuilder(
-                  animation: _buttonController,
-                  builder: (context, child) {
-                    final offset = 60 * (1 - _buttonController.value);
-                    return Opacity(
-                      opacity: _buttonController.value,
-                      child: Transform.translate(
-                        offset: Offset(0, offset),
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: Center(
-                    child: GestureDetector(
-                      onTapDown: (_) {
-                        setState(() => _buttonPressed = true);
-                      },
-                      onTapUp: (_) {
-                        setState(() => _buttonPressed = false);
-                      },
-                      onTapCancel: () {
-                        setState(() => _buttonPressed = false);
-                      },
-                      child: AnimatedScale(
-                        scale: _buttonPressed ? 0.93 : 1.0,
-                        duration: const Duration(milliseconds: 120),
-                        curve: Curves.easeOut,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF23284B),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 48,
-                              vertical: 18,
-                            ),
+      body: Stack(
+        children: [
+          // Animated gradient orb background
+          GradientOrbBackground(colorScheme: colorScheme)
+              .animate()
+              .scale(
+                begin: const Offset(1.1, 1.1),
+                end: const Offset(1.0, 1.0),
+                duration: 800.ms,
+                curve: Curves.easeOutQuint,
+              )
+              .fadeIn(duration: 600.ms),
+
+          // Decorative background
+          DecorativePane(colorScheme: colorScheme)
+              .animate()
+              .slideX(
+                begin: -0.2,
+                end: 0,
+                duration: 800.ms,
+                curve: Curves.easeOutQuint,
+              )
+              .fadeIn(duration: 600.ms),
+
+          // Main content
+          SafeArea(
+            child: Center(
+              child: SizedBox(
+                width: size.width,
+                height: size.height,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    // Title with enhanced animations
+                    AnimatedBuilder(
+                      animation: _titleController,
+                      builder: (context, child) {
+                        final offset = 40 * (1 - _titleController.value);
+                        return Opacity(
+                          opacity: _titleController.value,
+                          child: Transform.translate(
+                            offset: Offset(0, -offset),
+                            child: child,
                           ),
-                          onPressed: () {
-                            if (_currentPage < _pages.length - 1) {
-                              _pageController.nextPage(
-                                duration: Duration(milliseconds: 500),
-                                curve: Curves.easeInOut,
-                              );
-                            } else {
-                              // to login screen use go router
-                              context.go('/login');
-                            }
-                          },
-                          child: Text(
-                            _currentPage < _pages.length - 1
-                                ? 'Next'
-                                : 'Get Started',
-                            style: TextStyle(
-                              fontFamily: 'Serif',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 6,
+                                ),
+                                child: Stack(
+                                  children: [
+                                    // Enhanced paper background
+                                    Positioned.fill(
+                                          child: CustomPaint(
+                                            painter: _PaperBackgroundPainter(
+                                              backgroundColor: colorScheme
+                                                  .primary
+                                                  .withOpacity(0.05),
+                                              strokeColor: colorScheme.primary
+                                                  .withOpacity(0.1),
+                                            ),
+                                          ),
+                                        )
+                                        .animate()
+                                        .scale(
+                                          begin: const Offset(0.95, 0.95),
+                                          end: const Offset(1.0, 1.0),
+                                          duration: 600.ms,
+                                          curve: Curves.easeOutQuint,
+                                        )
+                                        .fadeIn(duration: 400.ms),
+
+                                    // Animated background shapes with enhanced animation
+                                    Positioned.fill(
+                                      child: CustomPaint(
+                                            painter: _TitleBackgroundPainter(
+                                              color: colorScheme.primary
+                                                  .withOpacity(0.07),
+                                            ),
+                                          )
+                                          .animate(
+                                            onPlay:
+                                                (controller) =>
+                                                    controller.repeat(),
+                                          )
+                                          .scale(
+                                            duration: 3.seconds,
+                                            begin: const Offset(1, 1),
+                                            end: const Offset(1.1, 1.1),
+                                            curve: Curves.easeInOut,
+                                          )
+                                          .rotate(
+                                            duration: 8.seconds,
+                                            begin: -0.02,
+                                            end: 0.02,
+                                          ),
+                                    ),
+
+                                    // Title text with enhanced animations
+                                    Center(
+                                      child: ShaderMask(
+                                        shaderCallback:
+                                            (bounds) => LinearGradient(
+                                              colors: [
+                                                colorScheme.primary,
+                                                colorScheme.tertiary,
+                                                colorScheme.secondary,
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ).createShader(bounds),
+                                        child: Text(
+                                          'MoodBoard',
+                                          style: TextStyle(
+                                            fontFamily: 'Serif',
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 42,
+                                            color: Colors.white,
+                                            letterSpacing: 1.2,
+                                            height: 1.1,
+                                            shadows: [
+                                              Shadow(
+                                                color: colorScheme.primary
+                                                    .withOpacity(0.5),
+                                                offset: const Offset(0, 4),
+                                                blurRadius: 15,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .animate()
+                              .fadeIn(duration: 800.ms)
+                              .slideY(
+                                begin: 0.3,
+                                end: 0,
+                                duration: 800.ms,
+                                curve: Curves.easeOutCubic,
+                              ),
+
+                          // const SizedBox(height: 8),
+
+                          // Subtitle with animated underline
+                          Column(
+                                children: [
+                                  Text(
+                                    'Express yourself',
+                                    style: TextStyle(
+                                      fontFamily: 'Serif',
+                                      fontSize: 18,
+                                      color: colorScheme.onPrimary.withOpacity(
+                                        0.8,
+                                      ),
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                        width: 120,
+                                        height: 2,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              colorScheme.primary.withOpacity(
+                                                0,
+                                              ),
+                                              colorScheme.primary.withOpacity(
+                                                0.7,
+                                              ),
+                                              colorScheme.primary.withOpacity(
+                                                0,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                      .animate(
+                                        onPlay:
+                                            (controller) => controller.repeat(),
+                                      )
+                                      .slideX(
+                                        begin: -1.5,
+                                        end: 1.5,
+                                        duration: 2.seconds,
+                                        curve: Curves.easeInOut,
+                                      ),
+                                ],
+                              )
+                              .animate()
+                              .fadeIn(duration: 600.ms, delay: 200.ms)
+                              .slideY(
+                                begin: 0.3,
+                                end: 0,
+                                duration: 600.ms,
+                                delay: 200.ms,
+                                curve: Curves.easeOutCubic,
+                              ),
+
+                          const SizedBox(height: 14),
+                        ],
+                      ),
+                    ),
+
+                    // PageView with enhanced transitions
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (index) {
+                          setState(() => _currentPage = index);
+                          // Reset and restart animations for the new page
+                          _facesController.reset();
+                          _centerController.reset();
+                          _startStaggered();
+                        },
+                        itemCount: _pages.length,
+                        itemBuilder: (context, index) {
+                          final page = _pages[index];
+                          return _buildPage(page);
+                        },
+                      ),
+                    ),
+
+                    // Enhanced page indicator
+                    AnimatedBuilder(
+                      animation: _centerController,
+                      builder: (context, child) {
+                        return Opacity(
+                          opacity: _centerController.value,
+                          child: child,
+                        );
+                      },
+                      child: smooth.SmoothPageIndicator(
+                        controller: _pageController,
+                        count: _pages.length,
+                        effect: smooth.WormEffect(
+                          dotHeight: 8,
+                          dotWidth: 8,
+                          type: smooth.WormType.thin,
+                          activeDotColor: Color(0xFF23284B),
+                          dotColor: Color(0xFFD9D9D9),
+                          strokeWidth: 1,
+                          paintStyle: PaintingStyle.fill,
                         ),
                       ),
+                    ).animate().scale(
+                      duration: 400.ms,
+                      curve: Curves.easeOutQuint,
+                      delay: 200.ms,
                     ),
-                  ),
+
+                    const SizedBox(height: 24),
+
+                    // Enhanced buttons animations
+                    AnimatedBuilder(
+                      animation: _buttonController,
+                      builder: (context, child) {
+                        final offset = 60 * (1 - _buttonController.value);
+                        return Opacity(
+                          opacity: _buttonController.value,
+                          child: Transform.translate(
+                            offset: Offset(0, offset),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          // Next/Get Started button with enhanced animations
+                          ModernButton(
+                            isLoading: false,
+                            onPressed: () {
+                              if (_currentPage < _pages.length - 1) {
+                                _pageController.nextPage(
+                                  duration: Duration(milliseconds: 600),
+                                  curve: Curves.easeInOut,
+                                );
+                              } else {
+                                context.go('/login');
+                              }
+                            },
+                            label:
+                                _currentPage < _pages.length - 1
+                                    ? 'Next'
+                                    : 'Get Started',
+                          ),
+                          const SizedBox(height: 10),
+
+                          // Skip button with enhanced animations
+                          InkWell(
+                                onTap: () => context.go('/login'),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Skip',
+                                      style: TextStyle(
+                                        fontFamily: 'Serif',
+                                        fontSize: 16,
+                                        color: colorScheme.onPrimary
+                                            .withOpacity(0.8),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 14,
+                                      color: colorScheme.onPrimary.withOpacity(
+                                        0.8,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .animate()
+                              .fadeIn(duration: 400.ms, delay: 200.ms)
+                              .slideX(
+                                begin: -0.2,
+                                end: 0,
+                                duration: 400.ms,
+                                delay: 200.ms,
+                                curve: Curves.easeOutQuint,
+                              ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
                 ),
-                const SizedBox(height: 32),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -281,121 +501,191 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   Widget _buildPage(OnboardingPage page) {
     return Center(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Top faces
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
+              children: [
+                if (_currentPage == 2) ...[
+                  // Enhanced floating bubbles with more dynamic animations
+                  Positioned(
+                    top: 20,
+                    left: 40,
+                    child: _FloatingBubble(
+                      color: Color(0xFFE6C3E2),
+                      size: 24,
+                      animation: CurvedAnimation(
+                        parent: _floatController,
+                        curve: Curves.easeInOut,
+                      ),
+                    ).animate().scale(
+                      duration: 600.ms,
+                      curve: Curves.easeOutQuint,
+                      delay: 200.ms,
+                    ),
+                  ),
+                  Positioned(
+                    top: 100,
+                    right: 30,
+                    child: _FloatingBubble(
+                      color: Color(0xFFA9D4F5),
+                      size: 32,
+                      animation: CurvedAnimation(
+                        parent: _floatController,
+                        curve: Interval(0.2, 0.8, curve: Curves.easeInOut),
+                      ),
+                    ).animate().scale(
+                      duration: 600.ms,
+                      curve: Curves.easeOutQuint,
+                      delay: 400.ms,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 120,
+                    left: 60,
+                    child: _FloatingBubble(
+                      color: Color(0xFFFFC3A0),
+                      size: 28,
+                      animation: CurvedAnimation(
+                        parent: _floatController,
+                        curve: Interval(0.4, 1.0, curve: Curves.easeInOut),
+                      ),
+                    ).animate().scale(
+                      duration: 600.ms,
+                      curve: Curves.easeOutQuint,
+                      delay: 600.ms,
+                    ),
+                  ),
+                ],
+                // Rest of the page content with enhanced animations
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (page.faces.isNotEmpty)
-                        _AnimatedFace(
-                          controller: _facesController,
-                          floatController: _floatController,
-                          interval: 0.0,
-                          child: _MoodFace(
-                            color: page.faces[0].color,
-                            label: page.faces[0].label,
-                            faceType: page.faces[0].faceType,
-                            labelOffset: page.faces[0].labelOffset,
-                            labelAngle: page.faces[0].labelAngle,
-                          ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (page.faces.isNotEmpty)
+                            _AnimatedFace(
+                              controller: _facesController,
+                              floatController: _floatController,
+                              interval: 0.0,
+                              child: _MoodFace(
+                                color: page.faces[0].color,
+                                label: page.faces[0].label,
+                                faceType: page.faces[0].faceType,
+                                labelOffset: page.faces[0].labelOffset,
+                                labelAngle: page.faces[0].labelAngle,
+                              ),
+                            ).animate().scale(
+                              duration: 600.ms,
+                              curve: Curves.easeOutQuint,
+                            ),
+                          if (page.faces.length > 1)
+                            _AnimatedFace(
+                              controller: _facesController,
+                              floatController: _floatController,
+                              interval: 0.15,
+                              child: _MoodFace(
+                                color: page.faces[1].color,
+                                label: page.faces[1].label,
+                                faceType: page.faces[1].faceType,
+                                labelOffset: page.faces[1].labelOffset,
+                                labelAngle: page.faces[1].labelAngle,
+                              ),
+                            ).animate().scale(
+                              duration: 600.ms,
+                              curve: Curves.easeOutQuint,
+                              delay: 100.ms,
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                      AnimatedBuilder(
+                        animation: _centerController,
+                        builder: (context, child) {
+                          final offset = 40 * (1 - _centerController.value);
+                          return Opacity(
+                            opacity: _centerController.value,
+                            child: Transform.translate(
+                              offset: Offset(0, offset),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                                  Icons.arrow_downward,
+                                  color: Color(0xFFB6D0E2),
+                                  size: 32,
+                                )
+                                .animate(
+                                  onPlay: (controller) => controller.repeat(),
+                                )
+                                .moveY(
+                                  begin: -4,
+                                  end: 4,
+                                  duration: 1.seconds,
+                                  curve: Curves.easeInOut,
+                                ),
+                            const SizedBox(height: 16),
+                            Text(
+                              page.title,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'Serif',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 32,
+                                color: Color(0xFF23284B),
+                                height: 1.2,
+                              ),
+                            ).animate().fadeIn(duration: 400.ms, delay: 200.ms),
+                            const SizedBox(height: 16),
+                            SizedBox(
+                                  width: 80,
+                                  height: 12,
+                                  child: CustomPaint(
+                                    painter: _SquigglePainter(),
+                                  ),
+                                )
+                                .animate()
+                                .scaleX(
+                                  begin: 0.6,
+                                  end: 1.0,
+                                  duration: 600.ms,
+                                  curve: Curves.easeOutQuint,
+                                )
+                                .fadeIn(duration: 400.ms),
+                          ],
                         ),
-                      if (page.faces.length > 1)
-                        _AnimatedFace(
-                          controller: _facesController,
-                          floatController: _floatController,
-                          interval: 0.15,
-                          child: _MoodFace(
-                            color: page.faces[1].color,
-                            label: page.faces[1].label,
-                            faceType: page.faces[1].faceType,
-                            labelOffset: page.faces[1].labelOffset,
-                            labelAngle: page.faces[1].labelAngle,
-                          ),
+                      ),
+                      const SizedBox(height: 32),
+                      if (page.faces.length > 2)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _AnimatedFace(
+                              controller: _facesController,
+                              floatController: _floatController,
+                              interval: 0.3,
+                              child: _MoodFace(
+                                color: page.faces[2].color,
+                                label: page.faces[2].label,
+                                faceType: page.faces[2].faceType,
+                                labelOffset: page.faces[2].labelOffset,
+                                labelAngle: page.faces[2].labelAngle,
+                              ),
+                            ).animate().scale(
+                              duration: 600.ms,
+                              curve: Curves.easeOutQuint,
+                              delay: 200.ms,
+                            ),
+                          ],
                         ),
                     ],
                   ),
-                  const SizedBox(height: 32),
-                  // Center text and squiggle
-                  AnimatedBuilder(
-                    animation: _centerController,
-                    builder: (context, child) {
-                      final offset = 40 * (1 - _centerController.value);
-                      return Opacity(
-                        opacity: _centerController.value,
-                        child: Transform.translate(
-                          offset: Offset(0, offset),
-                          child: child,
-                        ),
-                      );
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.arrow_downward,
-                          color: Color(0xFFB6D0E2),
-                          size: 32,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          page.title,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Serif',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 32,
-                            color: Color(0xFF23284B),
-                            height: 1.2,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        SizedBox(
-                          width: 80,
-                          height: 12,
-                          child: CustomPaint(painter: _SquigglePainter()),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  // Bottom faces
-                  if (page.faces.length > 2)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _AnimatedFace(
-                          controller: _facesController,
-                          floatController: _floatController,
-                          interval: 0.3,
-                          child: _MoodFace(
-                            color: page.faces[2].color,
-                            label: page.faces[2].label,
-                            faceType: page.faces[2].faceType,
-                            labelOffset: page.faces[2].labelOffset,
-                            labelAngle: page.faces[2].labelAngle,
-                          ),
-                        ),
-                        if (page.faces.length > 3)
-                          _AnimatedFace(
-                            controller: _facesController,
-                            floatController: _floatController,
-                            interval: 0.45,
-                            child: _MoodFace(
-                              color: page.faces[3].color,
-                              label: page.faces[3].label,
-                              faceType: page.faces[3].faceType,
-                              labelOffset: page.faces[3].labelOffset,
-                              labelAngle: page.faces[3].labelAngle,
-                            ),
-                          ),
-                      ],
-                    ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         )
@@ -405,7 +695,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           begin: 0.3,
           end: 0,
           duration: 600.ms,
-          curve: Curves.easeOutCubic,
+          curve: Curves.easeOutQuint,
         );
   }
 }
@@ -765,6 +1055,189 @@ class _AnimatedFace extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _TitleBackgroundPainter extends CustomPainter {
+  final Color color;
+
+  _TitleBackgroundPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint =
+        Paint()
+          ..color = color
+          ..style = PaintingStyle.fill;
+
+    // Draw decorative shapes
+    final path = Path();
+
+    // Add circles
+    path.addOval(
+      Rect.fromCircle(
+        center: Offset(size.width * 0.2, size.height * 0.3),
+        radius: 20,
+      ),
+    );
+    path.addOval(
+      Rect.fromCircle(
+        center: Offset(size.width * 0.8, size.height * 0.7),
+        radius: 15,
+      ),
+    );
+
+    // Add a wavy line
+    path.moveTo(0, size.height * 0.5);
+    for (var i = 0; i < size.width; i += 30) {
+      path.quadraticBezierTo(
+        i + 15,
+        size.height * 0.5 + (i % 60 == 0 ? 10 : -10),
+        i + 30,
+        size.height * 0.5,
+      );
+    }
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+Widget _buildDecorativeDot(Color color) {
+  return Container(
+    width: 8,
+    height: 8,
+    decoration: BoxDecoration(
+      color: color,
+      shape: BoxShape.circle,
+      boxShadow: [
+        BoxShadow(
+          color: color.withOpacity(0.3),
+          blurRadius: 8,
+          spreadRadius: 2,
+        ),
+      ],
+    ),
+  );
+}
+
+class _PaperBackgroundPainter extends CustomPainter {
+  final Color backgroundColor;
+  final Color strokeColor;
+
+  _PaperBackgroundPainter({
+    required this.backgroundColor,
+    required this.strokeColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final backgroundPaint =
+        Paint()
+          ..color = backgroundColor
+          ..style = PaintingStyle.fill;
+
+    final strokePaint =
+        Paint()
+          ..color = strokeColor
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1;
+
+    // Draw background
+    final backgroundPath =
+        Path()..addRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(0, 0, size.width, size.height),
+            Radius.circular(12),
+          ),
+        );
+    canvas.drawPath(backgroundPath, backgroundPaint);
+
+    // Draw scrambled lines
+    final random = Random(42); // Fixed seed for consistent pattern
+    for (var i = 0; i < 50; i++) {
+      final x1 = random.nextDouble() * size.width;
+      final y1 = random.nextDouble() * size.height;
+      final x2 = x1 + (random.nextDouble() - 0.5) * 40;
+      final y2 = y1 + (random.nextDouble() - 0.5) * 40;
+
+      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), strokePaint);
+    }
+
+    // Draw some random dots
+    for (var i = 0; i < 30; i++) {
+      final x = random.nextDouble() * size.width;
+      final y = random.nextDouble() * size.height;
+      canvas.drawCircle(Offset(x, y), random.nextDouble() * 2, strokePaint);
+    }
+
+    // Draw crumpled paper effect (curved lines)
+    for (var i = 0; i < 8; i++) {
+      final path = Path();
+      path.moveTo(
+        random.nextDouble() * size.width,
+        random.nextDouble() * size.height,
+      );
+
+      for (var j = 0; j < 3; j++) {
+        path.quadraticBezierTo(
+          random.nextDouble() * size.width,
+          random.nextDouble() * size.height,
+          random.nextDouble() * size.width,
+          random.nextDouble() * size.height,
+        );
+      }
+
+      canvas.drawPath(path, strokePaint..strokeWidth = 0.5);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _FloatingBubble extends StatelessWidget {
+  final Color color;
+  final double size;
+  final Animation<double> animation;
+
+  const _FloatingBubble({
+    required this.color,
+    required this.size,
+    required this.animation,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(
+            8 * sin(animation.value * 2 * pi),
+            12 * cos(animation.value * 2 * pi),
+          ),
+          child: child,
+        );
+      },
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.8),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.3),
+              blurRadius: 8,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

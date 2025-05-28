@@ -276,6 +276,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ModernButton(
           isLoading: _isLoading,
           onPressed: _isLoading ? null : _handleLogin,
+          label: 'Sign In',
+          icon: Icons.arrow_forward_ios,
         ),
       ],
     );

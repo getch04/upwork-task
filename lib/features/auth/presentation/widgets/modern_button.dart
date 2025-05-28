@@ -8,11 +8,15 @@ import 'package:google_fonts/google_fonts.dart';
 class ModernButton extends StatefulWidget {
   final bool isLoading;
   final VoidCallback? onPressed;
+  final String? label;
+  final IconData? icon;
 
   const ModernButton({
     super.key,
     required this.isLoading,
     required this.onPressed,
+     this.label,
+     this.icon,
   });
 
   @override
@@ -139,14 +143,15 @@ class _ModernButtonState extends State<ModernButton>
                         : Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            FaIcon(
-                              FontAwesomeIcons.rightToBracket,
-                              size: 16,
-                              color: colorScheme.onPrimary,
-                            ),
+                            if (widget.icon != null)
+                              FaIcon(
+                                widget.icon!,
+                                size: 16,
+                                color: colorScheme.onPrimary,
+                              ),
                             const SizedBox(width: 12),
                             Text(
-                              'Sign In',
+                              widget.label ?? 'Sign In',
                               style: GoogleFonts.quicksand(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
