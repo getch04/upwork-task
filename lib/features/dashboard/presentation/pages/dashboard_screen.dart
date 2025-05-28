@@ -1,10 +1,12 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:upwork_task/features/dashboard/animated_on_visibility.dart';
+import 'package:upwork_task/l10n/app_localizations.dart';
 
-import '../analytics/analytics_screen.dart';
-import '../settings/settings_screen.dart';
+import '../../../analytics/analytics_screen.dart';
+import '../../../settings/settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -42,6 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -83,7 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         opacity: _showAppBarTitle ? 1.0 : 0.0,
                         duration: 200.ms,
                         child: Text(
-                          'Welcome Back, Alex',
+                          l10n.welcomeBack,
                           style: textTheme.titleLarge?.copyWith(
                             color: colorScheme.onSurface,
                             fontWeight: FontWeight.bold,
@@ -98,13 +101,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Welcome Back,',
+                                l10n.welcomeBack,
                                 style: textTheme.headlineSmall?.copyWith(
                                   color: colorScheme.onSurface.withOpacity(0.7),
                                 ),
                               ),
                               Text(
-                                'Annette',
+                                l10n.annette,
                                 style: textTheme.headlineMedium?.copyWith(
                                   color: colorScheme.onSurface,
                                   fontWeight: FontWeight.bold,
@@ -133,6 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: _TodayMoodCard(
                               colorScheme: colorScheme,
                               textTheme: textTheme,
+                              l10n: l10n,
                             ),
                           ),
 
@@ -148,8 +152,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 Expanded(
                                   child: _MoodStatCard(
                                     icon: Icons.trending_up,
-                                    title: 'Weekly Streak',
-                                    value: '5 Days',
+                                    title: l10n.weeklyStreak,
+                                    value: l10n.streak5Days,
                                     colorScheme: colorScheme,
                                     textTheme: textTheme,
                                   ),
@@ -158,8 +162,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 Expanded(
                                   child: _MoodStatCard(
                                     icon: Icons.favorite,
-                                    title: 'Best Mood',
-                                    value: 'Happy',
+                                    title: l10n.bestMood,
+                                    value: l10n.happy,
                                     colorScheme: colorScheme,
                                     textTheme: textTheme,
                                   ),
@@ -177,7 +181,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             slideOffset: const Offset(0, 0.10),
                             duration: 500.ms,
                             child: Text(
-                              'Mood Trends',
+                              l10n.moodTrends,
                               style: textTheme.titleLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: colorScheme.onSurface,
@@ -191,6 +195,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: _MoodTrendsCard(
                               colorScheme: colorScheme,
                               textTheme: textTheme,
+                              l10n: l10n,
                             ),
                           ),
 
@@ -206,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Journal Entries',
+                                  l10n.journalEntries,
                                   style: textTheme.titleLarge?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: colorScheme.onSurface,
@@ -215,7 +220,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 TextButton.icon(
                                   onPressed: () {},
                                   icon: const Icon(Icons.add, size: 20),
-                                  label: const Text('New Entry'),
+                                  label: Text(l10n.newEntry),
                                 ),
                               ],
                             ),
@@ -227,6 +232,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: _JournalEntries(
                               colorScheme: colorScheme,
                               textTheme: textTheme,
+                              l10n: l10n,
                             ),
                           ),
                           const SizedBox(height: 32),
@@ -313,19 +319,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     _ModernNavItem(
                       icon: Icons.home_rounded,
-                      label: 'Home',
+                      label: l10n.home,
                       isSelected: _selectedIndex == 0,
                       onTap: () => setState(() => _selectedIndex = 0),
                     ),
                     _ModernNavItem(
                       icon: Icons.analytics_rounded,
-                      label: 'Analytics',
+                      label: l10n.analytics,
                       isSelected: _selectedIndex == 1,
                       onTap: () => setState(() => _selectedIndex = 1),
                     ),
                     _ModernNavItem(
                       icon: Icons.settings_rounded,
-                      label: 'Settings',
+                      label: l10n.settings,
                       isSelected: _selectedIndex == 2,
                       onTap: () => setState(() => _selectedIndex = 2),
                     ),
@@ -362,10 +368,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 class _TodayMoodCard extends StatelessWidget {
   final ColorScheme colorScheme;
   final TextTheme textTheme;
+  final AppLocalizations l10n;
 
   const _TodayMoodCard({
     required this.colorScheme,
     required this.textTheme,
+    required this.l10n,
   });
 
   @override
@@ -401,7 +409,7 @@ class _TodayMoodCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Today's Mood",
+                    l10n.todaysMood,
                     style: textTheme.titleMedium?.copyWith(
                       color: colorScheme.onPrimary.withOpacity(0.8),
                     ),
@@ -429,7 +437,7 @@ class _TodayMoodCard extends StatelessWidget {
                           ),
                       const SizedBox(width: 12),
                       Text(
-                        'Happy',
+                        l10n.happy,
                         style: textTheme.headlineSmall?.copyWith(
                           color: colorScheme.onPrimary,
                           fontWeight: FontWeight.bold,
@@ -452,7 +460,7 @@ class _TodayMoodCard extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            'Feeling energized and motivated! Started the day with meditation and a healthy breakfast. Ready to tackle any challenge.',
+            l10n.feelingEnergizedAndMotivated,
             style: textTheme.bodyLarge?.copyWith(
               color: colorScheme.onPrimary.withOpacity(0.9),
             ),
@@ -467,7 +475,7 @@ class _TodayMoodCard extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(
-                '9:30 AM',
+                l10n.nineThirtyAM,
                 style: textTheme.bodySmall?.copyWith(
                   color: colorScheme.onPrimary.withOpacity(0.7),
                 ),
@@ -549,10 +557,12 @@ class _MoodStatCard extends StatelessWidget {
 class _MoodTrendsCard extends StatelessWidget {
   final ColorScheme colorScheme;
   final TextTheme textTheme;
+  final AppLocalizations l10n;
 
   const _MoodTrendsCard({
     required this.colorScheme,
     required this.textTheme,
+    required this.l10n,
   });
 
   @override
@@ -576,7 +586,8 @@ class _MoodTrendsCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                'This Week',
+                l10n.thisWeek,
+                overflow: TextOverflow.ellipsis,
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colorScheme.onSurface,
@@ -586,7 +597,7 @@ class _MoodTrendsCard extends StatelessWidget {
               TextButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.calendar_today_outlined, size: 18),
-                label: const Text('Change'),
+                label: Text(l10n.change),
                 style: TextButton.styleFrom(
                   foregroundColor: colorScheme.primary,
                 ),
@@ -615,17 +626,22 @@ class _MoodTrendsCard extends StatelessWidget {
                             size: 20,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'Weekly Streak',
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: colorScheme.onSurface.withOpacity(0.7),
+                          Expanded(
+                            child: AutoSizeText(
+                              l10n.weeklyStreak,
+                              overflow: TextOverflow.ellipsis,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.onSurface
+                                    .withValues(alpha: 0.7),
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        '5 Days',
+                      AutoSizeText(
+                        l10n.streak5Days,
+                        overflow: TextOverflow.ellipsis,
                         style: textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: colorScheme.primary,
@@ -654,17 +670,20 @@ class _MoodTrendsCard extends StatelessWidget {
                             size: 20,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'Best Mood',
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: colorScheme.onSurface.withOpacity(0.7),
+                          Expanded(
+                            child: AutoSizeText(
+                              l10n.bestMood,
+                              overflow: TextOverflow.ellipsis,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.onSurface.withOpacity(0.7),
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Happy',
+                        l10n.happy,
                         style: textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: colorScheme.primary,
@@ -792,10 +811,12 @@ class _MoodTrendsCard extends StatelessWidget {
 class _JournalEntries extends StatelessWidget {
   final ColorScheme colorScheme;
   final TextTheme textTheme;
+  final AppLocalizations l10n;
 
   const _JournalEntries({
     required this.colorScheme,
     required this.textTheme,
+    required this.l10n,
   });
 
   @override
@@ -803,27 +824,24 @@ class _JournalEntries extends StatelessWidget {
     final entries = [
       {
         'emoji': '🌟',
-        'title': 'Achieved my daily goals',
-        'preview':
-            'Today was incredibly productive. I managed to complete all my tasks and even had time for a quick workout.',
+        'title': l10n.achievedDailyGoals,
+        'preview': l10n.journalPreviewProductive,
         'time': '2h ago',
-        'mood': 'Happy',
+        'mood': l10n.happy,
       },
       {
         'emoji': '🎨',
-        'title': 'Creative breakthrough',
-        'preview':
-            'Finally found inspiration for my art project. The colors and composition just clicked together perfectly.',
+        'title': l10n.creativeBreakthrough,
+        'preview': l10n.journalPreviewCreative,
         'time': 'Yesterday',
-        'mood': 'Inspired',
+        'mood': l10n.inspired,
       },
       {
         'emoji': '🌱',
-        'title': 'New beginnings',
-        'preview':
-            'Started a new chapter in my life. Feeling optimistic about the future and all its possibilities.',
+        'title': l10n.newBeginnings,
+        'preview': l10n.journalPreviewNewBeginnings,
         'time': '2d ago',
-        'mood': 'Hopeful',
+        'mood': l10n.hopeful,
       },
     ];
 
@@ -939,19 +957,6 @@ class _ModernNavItem extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Selected Background Indicator
-            AnimatedOpacity(
-              opacity: isSelected ? 1.0 : 0.0,
-              duration: 200.ms,
-              child: Container(
-                width: 64,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
             // Icon and Label
             Column(
               mainAxisAlignment: MainAxisAlignment.center,

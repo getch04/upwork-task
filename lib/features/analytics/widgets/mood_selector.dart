@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:upwork_task/l10n/app_localizations.dart';
 
 class MoodSelector extends StatefulWidget {
   final Function(int) onMoodSelected;
@@ -16,36 +17,37 @@ class MoodSelector extends StatefulWidget {
 class _MoodSelectorState extends State<MoodSelector> {
   int? _selectedIndex;
 
-  final List<MoodOption> _moods = [
-    const MoodOption(emoji: '😄', value: 5, label: 'Very Happy'),
-    const MoodOption(emoji: '🙂', value: 4, label: 'Happy'),
-    const MoodOption(emoji: '😐', value: 3, label: 'Neutral'),
-    const MoodOption(emoji: '😔', value: 2, label: 'Sad'),
-    const MoodOption(emoji: '😢', value: 1, label: 'Very Sad'),
-  ];
-
-  void _onMoodTap(int index) {
-    setState(() => _selectedIndex = index);
-    widget.onMoodSelected(_moods[index].value);
-  }
-
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    final List<MoodOption> moods = [
+      MoodOption(emoji: '😄', value: 5, label: l10n.veryHappy),
+      MoodOption(emoji: '🙂', value: 4, label: l10n.happy),
+      MoodOption(emoji: '😐', value: 3, label: l10n.neutral),
+      MoodOption(emoji: '😔', value: 2, label: l10n.sad),
+      MoodOption(emoji: '😢', value: 1, label: l10n.verySad),
+    ];
+
+    void onMoodTap(int index) {
+      setState(() => _selectedIndex = index);
+      widget.onMoodSelected(moods[index].value);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(_moods.length, (index) {
+          children: List.generate(moods.length, (index) {
             final isSelected = _selectedIndex == index;
             return _MoodButton(
-              emoji: _moods[index].emoji,
+              emoji: moods[index].emoji,
               isSelected: isSelected,
-              onTap: () => _onMoodTap(index),
-              label: _moods[index].label,
+              onTap: () => onMoodTap(index),
+              label: moods[index].label,
               colorScheme: colorScheme,
             )
                 .animate(
@@ -65,7 +67,7 @@ class _MoodSelectorState extends State<MoodSelector> {
         if (_selectedIndex != null) ...[
           const SizedBox(height: 16),
           Text(
-            _moods[_selectedIndex!].label,
+            moods[_selectedIndex!].label,
             style: textTheme.titleMedium?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w500,

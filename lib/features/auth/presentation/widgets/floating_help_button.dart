@@ -23,14 +23,13 @@ class _FloatingHelpButtonState extends State<FloatingHelpButton> {
         duration: 200.ms,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color:
-              _hovered
-                  ? widget.colorScheme.primaryContainer
-                  : widget.colorScheme.surface,
+          color: _hovered
+              ? widget.colorScheme.primaryContainer
+              : widget.colorScheme.surface,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: widget.colorScheme.shadow.withOpacity(0.2),
+              color: widget.colorScheme.shadow..withValues(alpha: 0.2),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -38,10 +37,9 @@ class _FloatingHelpButtonState extends State<FloatingHelpButton> {
         ),
         child: FaIcon(
           FontAwesomeIcons.circleQuestion,
-          color:
-              _hovered
-                  ? widget.colorScheme.onPrimaryContainer
-                  : widget.colorScheme.onSurface,
+          color: _hovered
+              ? widget.colorScheme.onPrimaryContainer
+              : widget.colorScheme.onSurface,
           size: 20,
         ),
       ),

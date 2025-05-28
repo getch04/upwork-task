@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:upwork_task/features/dashboard/animated_on_visibility.dart';
+import 'package:upwork_task/l10n/app_localizations.dart';
 
 import 'widgets/mood_selector.dart';
 
@@ -18,6 +19,42 @@ class AnalyticsScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final cardColor = Theme.of(context).cardColor;
+    final l10n = AppLocalizations.of(context)!;
+
+    final List<_ActivityData> activityData = [
+      _ActivityData(
+        title: l10n.moodStreak,
+        value: l10n.sevenDays,
+        subtitle: l10n.keepTrackingYourMood,
+        icon: Icons.mood_outlined,
+        progress: 0.7,
+        color: Colors.blue,
+      ),
+      _ActivityData(
+        title: l10n.reflections,
+        value: l10n.twelve,
+        subtitle: l10n.writtenThisWeek,
+        icon: Icons.edit_note_outlined,
+        progress: 0.8,
+        color: Colors.purple,
+      ),
+      _ActivityData(
+        title: l10n.happyDays,
+        value: l10n.fiveDays,
+        subtitle: l10n.thisWeek,
+        icon: Icons.sentiment_very_satisfied_outlined,
+        progress: 0.71,
+        color: Colors.orange,
+      ),
+      _ActivityData(
+        title: l10n.goalsMet,
+        value: l10n.threeOfFive,
+        subtitle: l10n.weeklyProgress,
+        icon: Icons.stars_outlined,
+        progress: 0.6,
+        color: Colors.green,
+      ),
+    ];
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -65,13 +102,13 @@ class AnalyticsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Welcome back,',
+                            l10n.welcomeBack,
                             style: textTheme.bodyMedium?.copyWith(
                               color: colorScheme.onSurface.withOpacity(0.6),
                             ),
                           ),
                           Text(
-                            'Annette',
+                            l10n.annette,
                             style: textTheme.titleMedium?.copyWith(
                               color: colorScheme.onSurface,
                               fontWeight: FontWeight.bold,
@@ -114,7 +151,7 @@ class AnalyticsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Mood Overview',
+                      l10n.moodOverview,
                       style: textTheme.titleLarge?.copyWith(
                         color: colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
@@ -161,7 +198,7 @@ class AnalyticsScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 58),
                                     Text(
-                                      'Positive Mood Rate',
+                                      l10n.positiveMoodRate,
                                       style: textTheme.bodyMedium?.copyWith(
                                         color: colorScheme.onSurface
                                             .withOpacity(0.6),
@@ -207,7 +244,7 @@ class AnalyticsScreen extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: colorScheme.primary.withValues(alpha: 0.5),
+                      color: colorScheme.primary.withOpacity(0.5),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -225,7 +262,7 @@ class AnalyticsScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'How are you feeling today?',
+                          l10n.howAreYouFeelingToday,
                           style: textTheme.titleMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -267,7 +304,7 @@ class AnalyticsScreen extends StatelessWidget {
                 crossAxisSpacing: 20,
                 childAspectRatio: 1.1,
                 children: [
-                  for (final activity in _activityData)
+                  for (final activity in activityData)
                     _ModernActivityCard(
                       activity: activity,
                       colorScheme: colorScheme,
@@ -453,38 +490,3 @@ class _ActivityData {
     required this.color,
   });
 }
-
-const List<_ActivityData> _activityData = [
-  _ActivityData(
-    title: 'Mood Streak',
-    value: '7 days',
-    subtitle: "Keep tracking your mood!",
-    icon: Icons.mood_outlined,
-    progress: 0.7,
-    color: Colors.blue,
-  ),
-  _ActivityData(
-    title: 'Reflections',
-    value: '12',
-    subtitle: "Written this week",
-    icon: Icons.edit_note_outlined,
-    progress: 0.8,
-    color: Colors.purple,
-  ),
-  _ActivityData(
-    title: 'Happy Days',
-    value: '5 days',
-    subtitle: "This week",
-    icon: Icons.sentiment_very_satisfied_outlined,
-    progress: 0.71,
-    color: Colors.orange,
-  ),
-  _ActivityData(
-    title: 'Goals Met',
-    value: '3/5',
-    subtitle: "Weekly progress",
-    icon: Icons.stars_outlined,
-    progress: 0.6,
-    color: Colors.green,
-  ),
-];

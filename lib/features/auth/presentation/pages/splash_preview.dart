@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
+import 'package:upwork_task/core/constants/app_strings.dart';
 
 class SplashPreview extends StatefulWidget {
   const SplashPreview({super.key});
@@ -63,7 +64,7 @@ class _SplashPreviewState extends State<SplashPreview>
             const SizedBox(height: 32),
             // App name with fade and slide animation
             Text(
-              'MoodBoard',
+              AppStrings.appName,
               style: textTheme.displayMedium?.copyWith(
                 color: isDarkMode ? Colors.white : const Color(0xFF23284B),
               ),
@@ -83,7 +84,7 @@ class _SplashPreviewState extends State<SplashPreview>
             const SizedBox(height: 8),
             // Tagline with fade animation
             Text(
-              'Express your emotions',
+              AppStrings.expressYourEmotions,
               style: textTheme.titleMedium?.copyWith(
                 color: (isDarkMode ? Colors.white : const Color(0xFF23284B))
                     .withOpacity(0.7),

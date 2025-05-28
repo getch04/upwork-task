@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/presentation/pages/login_screen.dart';
 import '../features/auth/presentation/pages/onboarding_screen.dart';
 import '../features/auth/presentation/pages/splash_preview.dart';
-import '../features/dashboard/dashboard_screen.dart';
+import '../features/dashboard/presentation/pages/dashboard_screen.dart';
 
 // Custom transition page builder
 CustomTransitionPage<void> _buildPageWithDefaultTransition<T>({
@@ -33,7 +33,7 @@ CustomTransitionPage<void> _buildPageWithDefaultTransition<T>({
 }
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/splash',
+  initialLocation: '/dashboard',
   routes: [
     GoRoute(
       path: '/splash',

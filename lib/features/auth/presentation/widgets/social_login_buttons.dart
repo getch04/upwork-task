@@ -14,7 +14,8 @@ class SocialLoginButtons extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: Divider(color: colorScheme.outline.withOpacity(0.5)),
+              child:
+                  Divider(color: colorScheme.outline..withValues(alpha: 0.5)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -24,7 +25,8 @@ class SocialLoginButtons extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Divider(color: colorScheme.outline.withOpacity(0.5)),
+              child:
+                  Divider(color: colorScheme.outline..withValues(alpha: 0.5)),
             ),
           ],
         ),
@@ -77,12 +79,12 @@ class _SocialButtonState extends State<_SocialButton> {
         duration: 200.ms,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color:
-              _hovered
-                  ? colorScheme.surfaceContainerHighest
-                  : colorScheme.surface,
+          color: _hovered
+              ? colorScheme.surfaceContainerHighest
+              : colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: colorScheme.outline.withOpacity(0.5)),
+          border:
+              Border.all(color: colorScheme.outline..withValues(alpha: 0.5)),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [widget.icon]),
       ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 
 import 'core/config/language/locale_provider.dart';
 import 'core/config/theme/theme_provider.dart';
+import 'l10n/app_localizations.dart';
 import 'router/app_router.dart';
 
 void main() async {
@@ -35,6 +37,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
+    final locale = context.watch<LocaleProvider>().locale;
+    print(
+        'MyApp rebuilding with locale: ${locale.languageCode}'); // Debug print
 
     return MaterialApp.router(
       routerDelegate: appRouter.routerDelegate,
@@ -45,10 +50,16 @@ class MyApp extends StatelessWidget {
       theme: themeProvider.lightTheme,
       darkTheme: themeProvider.darkTheme,
       themeMode: themeProvider.themeMode,
-      locale: context.watch<LocaleProvider>().locale,
-      supportedLocales: const [Locale('en'), Locale('es')],
+      locale: locale,
+      supportedLocales: const [
+        Locale('en'),
+        Locale('es'),
+      ],
       localizationsDelegates: const [
-        // Add your localization delegates here
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
     );
   }

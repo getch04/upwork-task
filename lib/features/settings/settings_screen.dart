@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import 'package:upwork_task/core/config/language/locale_provider.dart';
+import 'package:upwork_task/core/constants/app_strings.dart';
+import 'package:upwork_task/l10n/app_localizations.dart';
 
 import '../../core/config/theme/theme_provider.dart';
 
@@ -12,6 +15,7 @@ class SettingsScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final themeProvider = context.watch<ThemeProvider>();
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -21,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
           children: [
             // Header
             Text(
-              'Settings',
+              l10n.settings,
               style: textTheme.headlineMedium?.copyWith(
                 color: colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
@@ -36,17 +40,17 @@ class SettingsScreen extends StatelessWidget {
 
             // Theme Settings
             _SettingsSection(
-              title: 'Appearance',
+              title: l10n.appearance,
               delay: 100.ms,
               children: [
                 _SettingsTile(
                   icon: Icons.palette_outlined,
-                  title: 'Theme',
+                  title: l10n.theme,
                   subtitle: themeProvider.themeMode == ThemeMode.system
-                      ? 'System'
+                      ? l10n.system
                       : themeProvider.themeMode == ThemeMode.light
-                          ? 'Light'
-                          : 'Dark',
+                          ? l10n.light
+                          : l10n.dark,
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
@@ -68,13 +72,17 @@ class SettingsScreen extends StatelessWidget {
 
             // Language Settings
             _SettingsSection(
-              title: 'Language',
+              title: l10n.language,
               delay: 200.ms,
               children: [
                 _SettingsTile(
                   icon: Icons.language_outlined,
-                  title: 'App Language',
-                  subtitle: 'English',
+                  title: l10n.appLanguage,
+                  subtitle:
+                      context.watch<LocaleProvider>().locale.languageCode ==
+                              'en'
+                          ? 'English'
+                          : 'Español',
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
@@ -91,23 +99,23 @@ class SettingsScreen extends StatelessWidget {
 
             // App Info
             _SettingsSection(
-              title: 'About',
+              title: l10n.about,
               delay: 300.ms,
               children: [
                 _SettingsTile(
                   icon: Icons.info_outline,
-                  title: 'Version',
+                  title: l10n.version,
                   subtitle: '1.0.0',
                   onTap: () {},
                 ),
                 _SettingsTile(
                   icon: Icons.policy_outlined,
-                  title: 'Privacy Policy',
+                  title: l10n.privacyPolicy,
                   onTap: () {},
                 ),
                 _SettingsTile(
                   icon: Icons.description_outlined,
-                  title: 'Terms of Service',
+                  title: l10n.termsOfService,
                   onTap: () {},
                 ),
               ],
@@ -266,21 +274,21 @@ class _ThemePickerSheet extends StatelessWidget {
     final themes = [
       {
         'mode': ThemeMode.system,
-        'label': 'System',
+        'label': AppStrings.system,
         'icon': Icons.brightness_auto,
-        'description': 'Follow system theme',
+        'description': AppStrings.followSystemTheme,
       },
       {
         'mode': ThemeMode.light,
-        'label': 'Light',
+        'label': AppStrings.light,
         'icon': Icons.light_mode,
-        'description': 'Light color scheme',
+        'description': AppStrings.lightColorScheme,
       },
       {
         'mode': ThemeMode.dark,
-        'label': 'Dark',
+        'label': AppStrings.dark,
         'icon': Icons.dark_mode,
-        'description': 'Dark color scheme',
+        'description': AppStrings.darkColorScheme,
       },
     ];
 
@@ -298,7 +306,7 @@ class _ThemePickerSheet extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  'Select Theme',
+                  AppStrings.selectTheme,
                   style: textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -362,7 +370,14 @@ class _LanguagePickerSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final languages = ['English', 'Spanish', 'French', 'German'];
+    final l10n = AppLocalizations.of(context)!;
+    final languages = [
+      {'code': 'en', 'label': 'English', 'nativeLabel': 'English'},
+      {'code': 'es', 'label': 'Spanish', 'nativeLabel': 'Español'},
+    ];
+
+    final currentLocale = context.watch<LocaleProvider>().locale.languageCode;
+    print('Current locale in picker: $currentLocale'); // Debug print
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24),
@@ -378,7 +393,7 @@ class _LanguagePickerSheet extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  'Select Language',
+                  l10n.selectLanguage,
                   style: textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -392,16 +407,23 @@ class _LanguagePickerSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          ...languages.map((language) => ListTile(
+          ...languages.map((lang) => ListTile(
                 leading: const Icon(Icons.language),
-                title: Text(language),
-                trailing: language == 'English'
+                title: Text(lang['nativeLabel']!),
+                subtitle: Text(lang['label']!),
+                trailing: lang['code'] == currentLocale
                     ? Icon(
                         Icons.check_circle,
                         color: colorScheme.primary,
                       )
                     : null,
-                onTap: () => Navigator.pop(context),
+                onTap: () async {
+                  print('Tapped language: ${lang['code']}'); // Debug print
+                  await context.read<LocaleProvider>().setLocale(lang['code']!);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
               )),
         ],
       ),

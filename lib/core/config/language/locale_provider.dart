@@ -9,15 +9,20 @@ class LocaleProvider extends ChangeNotifier {
   Future<void> loadLocale() async {
     final prefs = await SharedPreferences.getInstance();
     final langCode = prefs.getString('locale') ?? 'en';
+    print('Loading locale: $langCode'); // Debug print
     _locale = Locale(langCode);
     notifyListeners();
   }
 
   Future<void> setLocale(String languageCode) async {
-    _locale = Locale(languageCode);
-    notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('locale', languageCode);
+    print('Setting locale to: $languageCode'); // Debug print
+    if (_locale.languageCode != languageCode) {
+      _locale = Locale(languageCode);
+      notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('locale', languageCode);
+      print('Locale set and saved: $languageCode'); // Debug print
+    }
   }
 
   void clearLocale() {

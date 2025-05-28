@@ -66,7 +66,7 @@ class AppTheme {
           color: colorScheme.onSurfaceVariant,
         ),
         hintStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant.withOpacity(0.7),
+          color: colorScheme.onSurfaceVariant..withValues(alpha: 0.7),
         ),
         errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
         suffixIconColor: colorScheme.onSurfaceVariant,
@@ -187,7 +187,7 @@ class AppTheme {
           color: colorScheme.onSurfaceVariant,
         ),
         hintStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant.withOpacity(0.7),
+          color: colorScheme.onSurfaceVariant..withValues(alpha: 0.7),
         ),
         errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
         suffixIconColor: colorScheme.onSurfaceVariant,

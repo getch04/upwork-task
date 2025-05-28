@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:upwork_task/core/constants/app_strings.dart';
 
 class ModernButton extends StatefulWidget {
   final bool isLoading;
@@ -15,8 +16,8 @@ class ModernButton extends StatefulWidget {
     super.key,
     required this.isLoading,
     required this.onPressed,
-     this.label,
-     this.icon,
+    this.label,
+    this.icon,
   });
 
   @override
@@ -41,14 +42,14 @@ class _ModernButtonState extends State<ModernButton>
         duration: 200.ms,
         curve: Curves.easeOut,
         height: 56,
-        transform:
-            Matrix4.identity()..scale(
-              _pressed
-                  ? 0.95
-                  : _hovered
-                  ? 1.02
-                  : 1.0,
-            ),
+        transform: Matrix4.identity()
+          ..scale(
+            _pressed
+                ? 0.95
+                : _hovered
+                    ? 1.02
+                    : 1.0,
+          ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -89,21 +90,21 @@ class _ModernButtonState extends State<ModernButton>
               if (!widget.isLoading && _hovered)
                 Positioned.fill(
                   child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Colors.white.withValues(alpha: 0),
-                              Colors.white.withValues(alpha: 0.2),
-                              Colors.white.withValues(alpha: 0),
-                            ],
-                            stops: const [0.35, 0.5, 0.65],
-                            transform: GradientRotation(pi / 4),
-                          ),
-                        ),
-                      )
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withValues(alpha: 0),
+                          Colors.white.withValues(alpha: 0.2),
+                          Colors.white.withValues(alpha: 0),
+                        ],
+                        stops: const [0.35, 0.5, 0.65],
+                        transform: const GradientRotation(pi / 4),
+                      ),
+                    ),
+                  )
                       .animate(onPlay: (controller) => controller.repeat())
                       .shimmer(
                         duration: 2.seconds,
@@ -112,55 +113,54 @@ class _ModernButtonState extends State<ModernButton>
                 ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child:
-                    widget.isLoading
-                        ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                                valueColor: AlwaysStoppedAnimation(
-                                  colorScheme.onPrimary.withValues(alpha: 0.9),
-                                ),
+                child: widget.isLoading
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              valueColor: AlwaysStoppedAnimation(
+                                colorScheme.onPrimary.withValues(alpha: 0.9),
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            Text(
-                              'Signing In...',
-                              style: GoogleFonts.quicksand(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: colorScheme.onPrimary.withValues(
-                                  alpha: 0.9,
-                                ),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            AppStrings.signingIn,
+                            style: GoogleFonts.quicksand(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: colorScheme.onPrimary.withValues(
+                                alpha: 0.9,
                               ),
                             ),
-                          ],
-                        )
-                        : Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (widget.icon != null)
-                              FaIcon(
-                                widget.icon!,
-                                size: 16,
-                                color: colorScheme.onPrimary,
-                              ),
-                            const SizedBox(width: 12),
-                            Text(
-                              widget.label ?? 'Sign In',
-                              style: GoogleFonts.quicksand(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onPrimary,
-                                letterSpacing: 0.5,
-                              ),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (widget.icon != null)
+                            FaIcon(
+                              widget.icon!,
+                              size: 16,
+                              color: colorScheme.onPrimary,
                             ),
-                          ],
-                        ),
+                          const SizedBox(width: 12),
+                          Text(
+                            widget.label ?? AppStrings.signIn,
+                            style: GoogleFonts.quicksand(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: colorScheme.onPrimary,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
+                      ),
               ),
             ],
           ),
