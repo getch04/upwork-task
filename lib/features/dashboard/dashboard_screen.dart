@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:upwork_task/features/dashboard/animated_on_visibility.dart';
 
 import '../analytics/analytics_screen.dart';
+import '../settings/settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -239,10 +240,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const AnalyticsScreen(
                 key: ValueKey<String>('analytics_screen'),
               ),
-              // Profile Screen (placeholder)
-              const Center(
-                key: ValueKey<String>('profile_screen'),
-                child: Text('Profile'),
+              // Settings Screen
+              const SettingsScreen(
+                key: ValueKey<String>('settings_screen'),
               ),
             ],
           ),
@@ -324,8 +324,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () => setState(() => _selectedIndex = 1),
                     ),
                     _ModernNavItem(
-                      icon: Icons.person_rounded,
-                      label: 'Profile',
+                      icon: Icons.settings_rounded,
+                      label: 'Settings',
                       isSelected: _selectedIndex == 2,
                       onTap: () => setState(() => _selectedIndex = 2),
                     ),
@@ -593,6 +593,89 @@ class _MoodTrendsCard extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          // Stats Row
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.trending_up_rounded,
+                            color: colorScheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Weekly Streak',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '5 Days',
+                        style: textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.sentiment_very_satisfied_rounded,
+                            color: colorScheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Best Mood',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Happy',
+                        style: textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 24),
           SizedBox(
             height: 200,
@@ -623,15 +706,7 @@ class _MoodTrendsCard extends StatelessWidget {
                     sideTitles: SideTitles(
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
-                        const days = [
-                          'Mon',
-                          'Tue',
-                          'Wed',
-                          'Thu',
-                          'Fri',
-                          'Sat',
-                          'Sun'
-                        ];
+                        const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
                         if (value >= 0 && value < days.length) {
                           return Padding(
                             padding: const EdgeInsets.only(top: 8),

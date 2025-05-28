@@ -7,18 +7,15 @@ import 'core/config/theme/theme_provider.dart';
 import 'router/app_router.dart';
 
 void main() async {
-  // Keep native splash screen up until app is fully loaded
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
 
-  // Initialize providers
   final themeProvider = ThemeProvider();
   await themeProvider.loadTheme();
 
   final localeProvider = LocaleProvider();
   await localeProvider.loadLocale();
 
-  // Remove splash screen once initialization is complete
   FlutterNativeSplash.remove();
 
   runApp(
@@ -37,16 +34,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+
     return MaterialApp.router(
       routerDelegate: appRouter.routerDelegate,
       routeInformationParser: appRouter.routeInformationParser,
       routeInformationProvider: appRouter.routeInformationProvider,
       debugShowCheckedModeBanner: false,
       title: 'MoodBoard',
-      theme: Provider.of<ThemeProvider>(context).lightTheme,
-      darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
-      themeMode: Provider.of<ThemeProvider>(context).themeMode,
-      locale: Provider.of<LocaleProvider>(context).locale,
+      theme: themeProvider.lightTheme,
+      darkTheme: themeProvider.darkTheme,
+      themeMode: themeProvider.themeMode,
+      locale: context.watch<LocaleProvider>().locale,
       supportedLocales: const [Locale('en'), Locale('es')],
       localizationsDelegates: const [
         // Add your localization delegates here

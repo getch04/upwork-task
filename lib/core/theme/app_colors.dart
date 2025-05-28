@@ -19,15 +19,25 @@ class AppColors {
   static const Color onTertiary = Color(0xFFFFFFFF);
   static const Color onTertiaryContainer = Color(0xFFFEF3C7);
 
-  // Neutral colors
-  static const Color background = Color(0xFFF8FAFC);
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceVariant = Color(0xFFF1F5F9);
+  // Neutral colors - Light
+  static const Color backgroundLight = Color(0xFFF8FAFC);
+  static const Color surfaceLight = Color(0xFFFFFFFF);
+  static const Color surfaceVariantLight = Color(0xFFF1F5F9);
 
-  // Text colors
-  static const Color onBackground = Color(0xFF0F172A);
-  static const Color onSurface = Color(0xFF1E293B);
-  static const Color onSurfaceVariant = Color(0xFF334155);
+  // Text colors - Light
+  static const Color onBackgroundLight = Color(0xFF0F172A);
+  static const Color onSurfaceLight = Color(0xFF1E293B);
+  static const Color onSurfaceVariantLight = Color(0xFF334155);
+
+  // Neutral colors - Dark
+  static const Color backgroundDark = Color(0xFF1A1C1E);
+  static const Color surfaceDark = Color(0xFF1C1C1E);
+  static const Color surfaceVariantDark = Color(0xFF2C2C2E);
+
+  // Text colors - Dark
+  static const Color onBackgroundDark = Color(0xFFE2E8F0);
+  static const Color onSurfaceDark = Color(0xFFF8FAFC);
+  static const Color onSurfaceVariantDark = Color(0xFFCBD5E1);
 
   // Error colors
   static const Color error = Color(0xFFEF4444);
@@ -35,11 +45,17 @@ class AppColors {
   static const Color onError = Color(0xFFFFFFFF);
   static const Color onErrorContainer = Color(0xFFFEE2E2);
 
-  // Additional colors
-  static const Color outline = Color(0xFFCBD5E1);
-  static const Color outlineVariant = Color(0xFFE2E8F0);
-  static const Color shadow = Color(0x1E293B40);
-  static const Color scrim = Color(0x99000000);
+  // Additional colors - Light
+  static const Color outlineLight = Color(0xFFCBD5E1);
+  static const Color outlineVariantLight = Color(0xFFE2E8F0);
+  static const Color shadowLight = Color(0x1E293B40);
+  static const Color scrimLight = Color(0x99000000);
+
+  // Additional colors - Dark
+  static const Color outlineDark = Color(0xFF475569);
+  static const Color outlineVariantDark = Color(0xFF334155);
+  static const Color shadowDark = Color(0x3D000000);
+  static const Color scrimDark = Color(0x99000000);
 
   // Gradient colors
   static const List<Color> primaryGradient = [
@@ -73,14 +89,44 @@ class AppColors {
       onError: onError,
       errorContainer: errorContainer,
       onErrorContainer: onErrorContainer,
-      surface: surface,
-      onSurface: onSurface,
-      surfaceContainerHighest: surfaceVariant,
-      onSurfaceVariant: onSurfaceVariant,
-      outline: outline,
-      outlineVariant: outlineVariant,
-      shadow: shadow,
-      scrim: scrim,
+      surface: surfaceLight,
+      onSurface: onSurfaceLight,
+      onSurfaceVariant: onSurfaceVariantLight,
+      outline: outlineLight,
+      outlineVariant: outlineVariantLight,
+      shadow: shadowLight,
+      scrim: scrimLight,
+      surfaceContainerHighest: surfaceVariantLight,
+    );
+  }
+
+  static ColorScheme get darkColorScheme {
+    return const ColorScheme(
+      brightness: Brightness.dark,
+      primary: primary,
+      onPrimary: onPrimary,
+      primaryContainer: primaryContainer,
+      onPrimaryContainer: onPrimaryContainer,
+      secondary: secondary,
+      onSecondary: onSecondary,
+      secondaryContainer: secondaryContainer,
+      onSecondaryContainer: onSecondaryContainer,
+      tertiary: tertiary,
+      onTertiary: onTertiary,
+      tertiaryContainer: tertiaryContainer,
+      onTertiaryContainer: onTertiaryContainer,
+      error: error,
+      onError: onError,
+      errorContainer: errorContainer,
+      onErrorContainer: onErrorContainer,
+      surface: surfaceDark,
+      onSurface: onSurfaceDark,
+      onSurfaceVariant: onSurfaceVariantDark,
+      outline: outlineDark,
+      outlineVariant: outlineVariantDark,
+      shadow: shadowDark,
+      scrim: scrimDark,
+      surfaceContainerHighest: surfaceVariantDark,
     );
   }
 }

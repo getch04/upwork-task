@@ -33,7 +33,7 @@ CustomTransitionPage<void> _buildPageWithDefaultTransition<T>({
 }
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/dashboard',
+  initialLocation: '/splash',
   routes: [
     GoRoute(
       path: '/splash',

@@ -341,11 +341,19 @@ class _ModernActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.primary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: isDarkMode
+              ? Colors.white.withOpacity(0.1)
+              : colorScheme.primary.withOpacity(0.1),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
             color: activity.color.withOpacity(0.08),
@@ -364,6 +372,10 @@ class _ModernActivityCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: activity.color.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: activity.color.withOpacity(0.2),
+                    width: 1,
+                  ),
                 ),
                 child: Icon(
                   activity.icon,
@@ -375,7 +387,7 @@ class _ModernActivityCard extends StatelessWidget {
               Text(
                 '${(activity.progress * 100).toInt()}%',
                 style: textTheme.titleMedium?.copyWith(
-                  color: activity.color,
+                  color: isDarkMode ? Colors.white : activity.color,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -406,7 +418,7 @@ class _ModernActivityCard extends StatelessWidget {
           Text(
             activity.value,
             style: textTheme.titleMedium?.copyWith(
-              color: colorScheme.onSurface,
+              color: isDarkMode ? Colors.white : colorScheme.onSurface,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -414,7 +426,8 @@ class _ModernActivityCard extends StatelessWidget {
           Text(
             activity.title,
             style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurface.withOpacity(0.6),
+              color: (isDarkMode ? Colors.white : colorScheme.onSurface)
+                  .withOpacity(0.6),
             ),
           ),
         ],
