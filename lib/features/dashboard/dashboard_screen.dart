@@ -1,6 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:upwork_task/features/dashboard/animated_on_visibility.dart';
+
+import '../analytics/analytics_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -41,300 +44,291 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          // Modern App Bar
-          SliverAppBar.medium(
-            expandedHeight: 120,
-            floating: false,
-            pinned: true,
-            backgroundColor: colorScheme.surface,
-            surfaceTintColor: Colors.transparent,
-            flexibleSpace: FlexibleSpaceBar(
-              title: AnimatedOpacity(
-                opacity: _showAppBarTitle ? 1.0 : 0.0,
-                duration: 200.ms,
-                child: Text(
-                  'Welcome Back, Alex',
-                  style: textTheme.titleLarge?.copyWith(
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              background: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Welcome Back,',
-                        style: textTheme.headlineSmall?.copyWith(
-                          color: colorScheme.onSurface.withOpacity(0.7),
-                        ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          // Home Screen
+          CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              // Modern App Bar
+              SliverAppBar.medium(
+                expandedHeight: 120,
+                floating: false,
+                pinned: true,
+                backgroundColor: colorScheme.surface,
+                surfaceTintColor: Colors.transparent,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: AnimatedOpacity(
+                    opacity: _showAppBarTitle ? 1.0 : 0.0,
+                    duration: 200.ms,
+                    child: Text(
+                      'Welcome Back, Alex',
+                      style: textTheme.titleLarge?.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        'Alex',
-                        style: textTheme.headlineMedium?.copyWith(
-                          color: colorScheme.onSurface,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          // Dashboard Content
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 24),
-
-                  // Today's Mood Card - Modern Design
-                  _TodayMoodCard(
-                    colorScheme: colorScheme,
-                    textTheme: textTheme,
-                  ).animate().fadeIn(duration: 400.ms).slideY(
-                        begin: 0.2,
-                        end: 0,
-                        duration: 500.ms,
-                        curve: Curves.easeOutQuint,
-                      ),
-
-                  const SizedBox(height: 32),
-
-                  // Mood Stats Row
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _MoodStatCard(
-                          icon: Icons.trending_up,
-                          title: 'Weekly Streak',
-                          value: '5 Days',
-                          colorScheme: colorScheme,
-                          textTheme: textTheme,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _MoodStatCard(
-                          icon: Icons.favorite,
-                          title: 'Best Mood',
-                          value: 'Happy',
-                          colorScheme: colorScheme,
-                          textTheme: textTheme,
-                        ),
-                      ),
-                    ],
-                  ).animate().fadeIn(delay: 200.ms).slideX(
-                        begin: -0.2,
-                        end: 0,
-                        duration: 500.ms,
-                        curve: Curves.easeOutQuint,
-                      ),
-
-                  const SizedBox(height: 32),
-
-                  // Mood Trends Section
-                  Text(
-                    'Mood Trends',
-                    style: textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  _MoodTrendsCard(
-                    colorScheme: colorScheme,
-                    textTheme: textTheme,
-                  ).animate().fadeIn(delay: 400.ms).slideY(
-                        begin: 0.2,
-                        end: 0,
-                        duration: 500.ms,
-                        curve: Curves.easeOutQuint,
-                      ),
-
-                  const SizedBox(height: 32),
-
-                  // Recent Journal Entries
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Journal Entries',
-                        style: textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.onSurface,
-                        ),
-                      ),
-                      TextButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.add, size: 20),
-                        label: const Text('New Entry'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  _JournalEntries(
-                    colorScheme: colorScheme,
-                    textTheme: textTheme,
-                  ).animate().fadeIn(delay: 600.ms).slideY(
-                        begin: 0.2,
-                        end: 0,
-                        duration: 500.ms,
-                        curve: Curves.easeOutQuint,
-                      ),
-
-                  const SizedBox(height: 32),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              height: 64,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    colorScheme.primary,
-                    colorScheme.primary.withOpacity(0.95),
-                    colorScheme.secondary.withOpacity(0.9),
-                    colorScheme.secondary.withOpacity(0.95),
-                  ],
-                  stops: const [0.0, 0.3, 0.6, 1.0],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: colorScheme.primary.withOpacity(0.3),
-                    blurRadius: 15,
-                    spreadRadius: 0,
-                    offset: const Offset(0, 4),
-                  ),
-                  BoxShadow(
-                    color: Colors.white.withOpacity(0.25),
-                    blurRadius: 15,
-                    spreadRadius: -2,
-                  ),
-                ],
-              ),
-              child: Stack(
-                children: [
-                  // Shimmering overlay
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.white.withOpacity(0.2),
-                            Colors.white.withOpacity(0.05),
-                            Colors.white.withOpacity(0.05),
-                            Colors.white.withOpacity(0.2),
-                          ],
-                          stops: const [0.0, 0.3, 0.7, 1.0],
-                        ),
-                      ),
-                    )
-                        .animate(
-                          onPlay: (controller) => controller.repeat(),
-                        )
-                        .shimmer(
-                          duration: 2000.ms,
-                          color: Colors.white.withOpacity(0.1),
-                        ),
-                  ),
-                  // Animated Selection Indicator
-                  AnimatedPositioned(
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeInOut,
-                    left: _selectedIndex *
-                        (MediaQuery.of(context).size.width - 48) /
-                        3,
-                    child: Container(
-                      width: (MediaQuery.of(context).size.width - 48) / 3,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.1),
-                            blurRadius: 10,
-                            spreadRadius: -2,
+                  background: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Welcome Back,',
+                            style: textTheme.headlineSmall?.copyWith(
+                              color: colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                          ),
+                          Text(
+                            'Alex',
+                            style: textTheme.headlineMedium?.copyWith(
+                              color: colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  // Navigation Items
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                ),
+              ),
+
+              // Dashboard Content
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _ModernNavItem(
-                        icon: Icons.home_rounded,
-                        label: 'Home',
-                        isSelected: _selectedIndex == 0,
-                        onTap: () => setState(() => _selectedIndex = 0),
+                      const SizedBox(height: 24),
+
+                      // Today's Mood Card - Modern Design
+                      AnimatedOnVisibility(
+                        key: const Key('today-mood'),
+                        delay: 0.ms,
+                        child: _TodayMoodCard(
+                          colorScheme: colorScheme,
+                          textTheme: textTheme,
+                        ),
                       ),
-                      _ModernNavItem(
-                        icon: Icons.analytics_rounded,
-                        label: 'Analytics',
-                        isSelected: _selectedIndex == 1,
-                        onTap: () => setState(() => _selectedIndex = 1),
+
+                      const SizedBox(height: 32),
+
+                      // Mood Stats Row
+                      AnimatedOnVisibility(
+                        key: const Key('mood-stats'),
+                        delay: 120.ms,
+                        slideOffset: const Offset(-0.12, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: _MoodStatCard(
+                                icon: Icons.trending_up,
+                                title: 'Weekly Streak',
+                                value: '5 Days',
+                                colorScheme: colorScheme,
+                                textTheme: textTheme,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: _MoodStatCard(
+                                icon: Icons.favorite,
+                                title: 'Best Mood',
+                                value: 'Happy',
+                                colorScheme: colorScheme,
+                                textTheme: textTheme,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      _ModernNavItem(
-                        icon: Icons.person_rounded,
-                        label: 'Profile',
-                        isSelected: _selectedIndex == 2,
-                        onTap: () => setState(() => _selectedIndex = 2),
+
+                      const SizedBox(height: 32),
+
+                      // Mood Trends Section
+                      AnimatedOnVisibility(
+                        key: const Key('mood-trends-title'),
+                        delay: 240.ms,
+                        slideOffset: const Offset(0, 0.10),
+                        duration: 500.ms,
+                        child: Text(
+                          'Mood Trends',
+                          style: textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
                       ),
+                      const SizedBox(height: 16),
+                      AnimatedOnVisibility(
+                        key: const Key('mood-trends-card'),
+                        delay: 320.ms,
+                        child: _MoodTrendsCard(
+                          colorScheme: colorScheme,
+                          textTheme: textTheme,
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // Recent Journal Entries
+                      AnimatedOnVisibility(
+                        key: const Key('journal-title'),
+                        delay: 400.ms,
+                        slideOffset: const Offset(0, 0.10),
+                        duration: 500.ms,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Journal Entries',
+                              style: textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Icon(Icons.add, size: 20),
+                              label: const Text('New Entry'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      AnimatedOnVisibility(
+                        key: const Key('journal-entries'),
+                        delay: 480.ms,
+                        child: _JournalEntries(
+                          colorScheme: colorScheme,
+                          textTheme: textTheme,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
-          )
-              .animate(
-                delay: 800.ms,
-              )
-              .slideY(
-                begin: 1,
-                end: 0,
-                curve: Curves.easeOutExpo,
-                duration: 800.ms,
-              )
-              .fadeIn(
-                duration: 500.ms,
-              )
-              .scale(
-                begin: const Offset(0.8, 0.8),
-                end: const Offset(1.0, 1.0),
-                curve: Curves.easeOutBack,
-                duration: 800.ms,
-              ),
-        ),
+            ],
+          ),
+          // Analytics Screen
+          const AnalyticsScreen(),
+          // Profile Screen (placeholder)
+          const Center(child: Text('Profile')),
+        ],
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            height: 64,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  colorScheme.primary,
+                  colorScheme.primary.withOpacity(0.95),
+                  colorScheme.secondary.withOpacity(0.9),
+                  colorScheme.secondary.withOpacity(0.95),
+                ],
+                stops: const [0.0, 0.3, 0.6, 1.0],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: colorScheme.primary.withOpacity(0.3),
+                  blurRadius: 18,
+                  spreadRadius: 0,
+                  offset: const Offset(0, 8),
+                ),
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.18),
+                  blurRadius: 32,
+                  spreadRadius: 0,
+                  offset: const Offset(0, 16),
+                ),
+              ],
+            ),
+            child: Stack(
+              children: [
+                // Animated Selection Indicator
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeInOut,
+                  left: _selectedIndex *
+                      (MediaQuery.of(context).size.width - 48) /
+                      3,
+                  child: Container(
+                    width: (MediaQuery.of(context).size.width - 48) / 3,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withOpacity(0.18),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: colorScheme.primary.withOpacity(0.10),
+                          blurRadius: 8,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Navigation Items
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _ModernNavItem(
+                      icon: Icons.home_rounded,
+                      label: 'Home',
+                      isSelected: _selectedIndex == 0,
+                      onTap: () => setState(() => _selectedIndex = 0),
+                    ),
+                    _ModernNavItem(
+                      icon: Icons.analytics_rounded,
+                      label: 'Analytics',
+                      isSelected: _selectedIndex == 1,
+                      onTap: () => setState(() => _selectedIndex = 1),
+                    ),
+                    _ModernNavItem(
+                      icon: Icons.person_rounded,
+                      label: 'Profile',
+                      isSelected: _selectedIndex == 2,
+                      onTap: () => setState(() => _selectedIndex = 2),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        )
+            .animate(
+              delay: 600.ms,
+            )
+            .slideY(
+              begin: 1.2,
+              end: 0,
+              curve: Curves.easeOutExpo,
+              duration: 900.ms,
+            )
+            .fadeIn(
+              duration: 600.ms,
+            )
+            .scale(
+              begin: const Offset(0.7, 0.7),
+              end: const Offset(1.0, 1.0),
+              curve: Curves.easeOutBack,
+              duration: 900.ms,
+            ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

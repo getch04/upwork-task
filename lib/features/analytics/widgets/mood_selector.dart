@@ -1,0 +1,147 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+
+class MoodSelector extends StatefulWidget {
+  final Function(int) onMoodSelected;
+
+  const MoodSelector({
+    super.key,
+    required this.onMoodSelected,
+  });
+
+  @override
+  State<MoodSelector> createState() => _MoodSelectorState();
+}
+
+class _MoodSelectorState extends State<MoodSelector> {
+  int? _selectedIndex;
+
+  final List<MoodOption> _moods = [
+    const MoodOption(emoji: '😄', value: 5, label: 'Very Happy'),
+    const MoodOption(emoji: '🙂', value: 4, label: 'Happy'),
+    const MoodOption(emoji: '😐', value: 3, label: 'Neutral'),
+    const MoodOption(emoji: '😔', value: 2, label: 'Sad'),
+    const MoodOption(emoji: '😢', value: 1, label: 'Very Sad'),
+  ];
+
+  void _onMoodTap(int index) {
+    setState(() => _selectedIndex = index);
+    widget.onMoodSelected(_moods[index].value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Choose your mood for today',
+          style: textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(_moods.length, (index) {
+            return _MoodButton(
+              emoji: _moods[index].emoji,
+              isSelected: _selectedIndex == index,
+              onTap: () => _onMoodTap(index),
+              label: _moods[index].label,
+            )
+                .animate(
+                  delay: (50 * index).ms,
+                )
+                .slideY(
+                  begin: 0.3,
+                  end: 0,
+                  curve: Curves.easeOutCubic,
+                  duration: 500.ms,
+                )
+                .fadeIn(
+                  duration: 400.ms,
+                );
+          }),
+        ),
+      ],
+    );
+  }
+}
+
+class _MoodButton extends StatelessWidget {
+  final String emoji;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final String label;
+
+  const _MoodButton({
+    required this.emoji,
+    required this.isSelected,
+    required this.onTap,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Tooltip(
+      message: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            color: const Color(0xFF2C2C2E),
+            borderRadius: BorderRadius.circular(16),
+            border: isSelected
+                ? Border.all(color: colorScheme.primary, width: 2)
+                : null,
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: colorScheme.primary.withOpacity(0.3),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    )
+                  ]
+                : null,
+          ),
+          child: Center(
+            child: Text(
+              emoji,
+              style: const TextStyle(fontSize: 24),
+            ),
+          ),
+        ),
+      ),
+    )
+        .animate(
+          target: isSelected ? 1 : 0,
+        )
+        .scale(
+          begin: const Offset(1, 1),
+          end: const Offset(1.05, 1.05),
+          duration: 200.ms,
+          curve: Curves.easeOutCubic,
+        );
+  }
+}
+
+class MoodOption {
+  final String emoji;
+  final int value;
+  final String label;
+
+  const MoodOption({
+    required this.emoji,
+    required this.value,
+    required this.label,
+  });
+}

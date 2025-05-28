@@ -124,4 +124,44 @@ class AppTheme {
       ),
     );
   }
+
+  static ThemeData darkTheme = ThemeData.dark().copyWith(
+    scaffoldBackgroundColor: const Color(0xFF1C1C1E),
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xFFFFC043),
+      secondary: Color(0xFF5E5CE6),
+      surface: Color(0xFF1C1C1E),
+      error: Color(0xFFFF453A),
+      onPrimary: Colors.black,
+      onSecondary: Colors.white,
+      onSurface: Colors.white,
+      onError: Colors.white,
+      brightness: Brightness.dark,
+    ),
+    cardColor: const Color(0xFF2C2C2E),
+    textTheme: const TextTheme().copyWith(
+      titleLarge: const TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      titleMedium: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+      ),
+      bodyLarge: const TextStyle(
+        fontSize: 16,
+        color: Colors.white,
+      ),
+      bodyMedium: const TextStyle(
+        fontSize: 14,
+        color: Colors.white70,
+      ),
+      bodySmall: const TextStyle(
+        fontSize: 12,
+        color: Colors.white54,
+      ),
+    ),
+  );
 }
