@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:upwork_task/core/config/language/locale_provider.dart';
-import 'package:upwork_task/core/config/theme/theme_provider.dart';
-import 'package:upwork_task/features/settings/domain/constants/language_constants.dart';
-import 'package:upwork_task/features/settings/domain/constants/theme_constants.dart';
 import 'package:upwork_task/features/settings/presentation/widgets/language_picker_sheet.dart';
 import 'package:upwork_task/features/settings/presentation/widgets/settings_section.dart';
 import 'package:upwork_task/features/settings/presentation/widgets/settings_tile.dart';
 import 'package:upwork_task/features/settings/presentation/widgets/theme_picker_sheet.dart';
 import 'package:upwork_task/l10n/app_localizations.dart';
+
+import '../../../../core/config/theme/theme_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -50,10 +49,11 @@ class SettingsScreen extends StatelessWidget {
                 SettingsTile(
                   icon: Icons.palette_outlined,
                   title: l10n.theme,
-                  subtitle: ThemeConstants.themes
-                      .firstWhere(
-                          (theme) => theme.mode == themeProvider.themeMode)
-                      .label,
+                  subtitle: themeProvider.themeMode == ThemeMode.system
+                      ? l10n.system
+                      : themeProvider.themeMode == ThemeMode.light
+                          ? l10n.light
+                          : l10n.dark,
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
@@ -81,13 +81,11 @@ class SettingsScreen extends StatelessWidget {
                 SettingsTile(
                   icon: Icons.language_outlined,
                   title: l10n.appLanguage,
-                  subtitle: LanguageConstants.languages
-                      .firstWhere(
-                        (lang) =>
-                            lang.code ==
-                            context.watch<LocaleProvider>().locale.languageCode,
-                      )
-                      .nativeLabel,
+                  subtitle:
+                      context.watch<LocaleProvider>().locale.languageCode ==
+                              'en'
+                          ? 'English'
+                          : 'Español',
                   onTap: () {
                     showModalBottomSheet(
                       context: context,

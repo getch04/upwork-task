@@ -6,10 +6,10 @@ import 'package:upwork_task/features/dashboard/presentation/widgets/modern_nav_i
 import 'package:upwork_task/features/dashboard/presentation/widgets/mood_stat_card.dart';
 import 'package:upwork_task/features/dashboard/presentation/widgets/mood_trends_card.dart';
 import 'package:upwork_task/features/dashboard/presentation/widgets/today_mood_card.dart';
+import 'package:upwork_task/features/settings/presentation/pages/settings_screen.dart';
 import 'package:upwork_task/l10n/app_localizations.dart';
 
 import '../../../analytics/analytics_screen.dart';
-import '../../../settings/settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
