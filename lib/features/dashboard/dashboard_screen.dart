@@ -44,183 +44,209 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          // Home Screen
-          CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              // Modern App Bar
-              SliverAppBar.medium(
-                expandedHeight: 120,
-                floating: false,
-                pinned: true,
-                backgroundColor: colorScheme.surface,
-                surfaceTintColor: Colors.transparent,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: AnimatedOpacity(
-                    opacity: _showAppBarTitle ? 1.0 : 0.0,
-                    duration: 200.ms,
-                    child: Text(
-                      'Welcome Back, Alex',
-                      style: textTheme.titleLarge?.copyWith(
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.bold,
+      body: AnimatedSwitcher(
+        duration: 300.ms,
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        transitionBuilder: (child, animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.05, 0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+          );
+        },
+        child: KeyedSubtree(
+          key: ValueKey<int>(_selectedIndex),
+          child: IndexedStack(
+            index: _selectedIndex,
+            children: [
+              // Home Screen
+              CustomScrollView(
+                key: const ValueKey<String>('home_screen'),
+                controller: _scrollController,
+                slivers: [
+                  // Modern App Bar
+                  SliverAppBar.medium(
+                    expandedHeight: 120,
+                    floating: false,
+                    pinned: true,
+                    backgroundColor: colorScheme.surface,
+                    surfaceTintColor: Colors.transparent,
+                    flexibleSpace: FlexibleSpaceBar(
+                      title: AnimatedOpacity(
+                        opacity: _showAppBarTitle ? 1.0 : 0.0,
+                        duration: 200.ms,
+                        child: Text(
+                          'Welcome Back, Alex',
+                          style: textTheme.titleLarge?.copyWith(
+                            color: colorScheme.onSurface,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      background: SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome Back,',
+                                style: textTheme.headlineSmall?.copyWith(
+                                  color: colorScheme.onSurface.withOpacity(0.7),
+                                ),
+                              ),
+                              Text(
+                                'Annette',
+                                style: textTheme.headlineMedium?.copyWith(
+                                  color: colorScheme.onSurface,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  background: SafeArea(
+
+                  // Dashboard Content
+                  SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Welcome Back,',
-                            style: textTheme.headlineSmall?.copyWith(
-                              color: colorScheme.onSurface.withOpacity(0.7),
+                          const SizedBox(height: 24),
+
+                          // Today's Mood Card - Modern Design
+                          AnimatedOnVisibility(
+                            key: const Key('today-mood'),
+                            delay: 0.ms,
+                            child: _TodayMoodCard(
+                              colorScheme: colorScheme,
+                              textTheme: textTheme,
                             ),
                           ),
-                          Text(
-                            'Alex',
-                            style: textTheme.headlineMedium?.copyWith(
-                              color: colorScheme.onSurface,
-                              fontWeight: FontWeight.bold,
+
+                          const SizedBox(height: 32),
+
+                          // Mood Stats Row
+                          AnimatedOnVisibility(
+                            key: const Key('mood-stats'),
+                            delay: 120.ms,
+                            slideOffset: const Offset(-0.12, 0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: _MoodStatCard(
+                                    icon: Icons.trending_up,
+                                    title: 'Weekly Streak',
+                                    value: '5 Days',
+                                    colorScheme: colorScheme,
+                                    textTheme: textTheme,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: _MoodStatCard(
+                                    icon: Icons.favorite,
+                                    title: 'Best Mood',
+                                    value: 'Happy',
+                                    colorScheme: colorScheme,
+                                    textTheme: textTheme,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
 
-              // Dashboard Content
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 24),
+                          const SizedBox(height: 32),
 
-                      // Today's Mood Card - Modern Design
-                      AnimatedOnVisibility(
-                        key: const Key('today-mood'),
-                        delay: 0.ms,
-                        child: _TodayMoodCard(
-                          colorScheme: colorScheme,
-                          textTheme: textTheme,
-                        ),
-                      ),
-
-                      const SizedBox(height: 32),
-
-                      // Mood Stats Row
-                      AnimatedOnVisibility(
-                        key: const Key('mood-stats'),
-                        delay: 120.ms,
-                        slideOffset: const Offset(-0.12, 0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: _MoodStatCard(
-                                icon: Icons.trending_up,
-                                title: 'Weekly Streak',
-                                value: '5 Days',
-                                colorScheme: colorScheme,
-                                textTheme: textTheme,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: _MoodStatCard(
-                                icon: Icons.favorite,
-                                title: 'Best Mood',
-                                value: 'Happy',
-                                colorScheme: colorScheme,
-                                textTheme: textTheme,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 32),
-
-                      // Mood Trends Section
-                      AnimatedOnVisibility(
-                        key: const Key('mood-trends-title'),
-                        delay: 240.ms,
-                        slideOffset: const Offset(0, 0.10),
-                        duration: 500.ms,
-                        child: Text(
-                          'Mood Trends',
-                          style: textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: colorScheme.onSurface,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      AnimatedOnVisibility(
-                        key: const Key('mood-trends-card'),
-                        delay: 320.ms,
-                        child: _MoodTrendsCard(
-                          colorScheme: colorScheme,
-                          textTheme: textTheme,
-                        ),
-                      ),
-
-                      const SizedBox(height: 32),
-
-                      // Recent Journal Entries
-                      AnimatedOnVisibility(
-                        key: const Key('journal-title'),
-                        delay: 400.ms,
-                        slideOffset: const Offset(0, 0.10),
-                        duration: 500.ms,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Journal Entries',
+                          // Mood Trends Section
+                          AnimatedOnVisibility(
+                            key: const Key('mood-trends-title'),
+                            delay: 240.ms,
+                            slideOffset: const Offset(0, 0.10),
+                            duration: 500.ms,
+                            child: Text(
+                              'Mood Trends',
                               style: textTheme.titleLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: colorScheme.onSurface,
                               ),
                             ),
-                            TextButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.add, size: 20),
-                              label: const Text('New Entry'),
+                          ),
+                          const SizedBox(height: 16),
+                          AnimatedOnVisibility(
+                            key: const Key('mood-trends-card'),
+                            delay: 320.ms,
+                            child: _MoodTrendsCard(
+                              colorScheme: colorScheme,
+                              textTheme: textTheme,
                             ),
-                          ],
-                        ),
+                          ),
+
+                          const SizedBox(height: 32),
+
+                          // Recent Journal Entries
+                          AnimatedOnVisibility(
+                            key: const Key('journal-title'),
+                            delay: 400.ms,
+                            slideOffset: const Offset(0, 0.10),
+                            duration: 500.ms,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Journal Entries',
+                                  style: textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: colorScheme.onSurface,
+                                  ),
+                                ),
+                                TextButton.icon(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.add, size: 20),
+                                  label: const Text('New Entry'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          AnimatedOnVisibility(
+                            key: const Key('journal-entries'),
+                            delay: 480.ms,
+                            child: _JournalEntries(
+                              colorScheme: colorScheme,
+                              textTheme: textTheme,
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                        ],
                       ),
-                      const SizedBox(height: 16),
-                      AnimatedOnVisibility(
-                        key: const Key('journal-entries'),
-                        delay: 480.ms,
-                        child: _JournalEntries(
-                          colorScheme: colorScheme,
-                          textTheme: textTheme,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                    ],
+                    ),
                   ),
-                ),
+                ],
+              ),
+              // Analytics Screen
+              const AnalyticsScreen(
+                key: ValueKey<String>('analytics_screen'),
+              ),
+              // Profile Screen (placeholder)
+              const Center(
+                key: ValueKey<String>('profile_screen'),
+                child: Text('Profile'),
               ),
             ],
           ),
-          // Analytics Screen
-          const AnalyticsScreen(),
-          // Profile Screen (placeholder)
-          const Center(child: Text('Profile')),
-        ],
+        ),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
@@ -835,23 +861,71 @@ class _ModernNavItem extends StatelessWidget {
       onTap: onTap,
       child: SizedBox(
         width: (MediaQuery.of(context).size.width - 48) / 3,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            Icon(
-              icon,
-              color: Colors.white,
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+            // Selected Background Indicator
+            AnimatedOpacity(
+              opacity: isSelected ? 1.0 : 0.0,
+              duration: 200.ms,
+              child: Container(
+                width: 64,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
-            )
+            ),
+            // Icon and Label
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  color: Colors.white.withOpacity(isSelected ? 1.0 : 0.7),
+                  size: isSelected ? 26 : 24,
+                )
+                    .animate(
+                      target: isSelected ? 1 : 0,
+                    )
+                    .scale(
+                      begin: const Offset(1, 1),
+                      end: const Offset(1.1, 1.1),
+                      duration: 200.ms,
+                      curve: Curves.easeOutCubic,
+                    ),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(isSelected ? 1.0 : 0.7),
+                    fontSize: 12,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  ),
+                )
+                    .animate(
+                      target: isSelected ? 1 : 0,
+                    )
+                    .scale(
+                      begin: const Offset(1, 1),
+                      end: const Offset(1.05, 1.05),
+                      duration: 200.ms,
+                      curve: Curves.easeOutCubic,
+                    ),
+                const SizedBox(height: 2),
+                // Bottom Dot Indicator
+                AnimatedContainer(
+                  duration: 200.ms,
+                  width: isSelected ? 4 : 0,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

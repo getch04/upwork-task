@@ -31,27 +31,22 @@ class _MoodSelectorState extends State<MoodSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Choose your mood for today',
-          style: textTheme.titleMedium?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(_moods.length, (index) {
+            final isSelected = _selectedIndex == index;
             return _MoodButton(
               emoji: _moods[index].emoji,
-              isSelected: _selectedIndex == index,
+              isSelected: isSelected,
               onTap: () => _onMoodTap(index),
               label: _moods[index].label,
+              colorScheme: colorScheme,
             )
                 .animate(
                   delay: (50 * index).ms,
@@ -67,6 +62,21 @@ class _MoodSelectorState extends State<MoodSelector> {
                 );
           }),
         ),
+        if (_selectedIndex != null) ...[
+          const SizedBox(height: 16),
+          Text(
+            _moods[_selectedIndex!].label,
+            style: textTheme.titleMedium?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+            ),
+          ).animate().fadeIn(duration: 300.ms).scale(
+                begin: const Offset(0.95, 0.95),
+                end: const Offset(1, 1),
+                duration: 300.ms,
+                curve: Curves.easeOutCubic,
+              ),
+        ],
       ],
     );
   }
@@ -77,46 +87,56 @@ class _MoodButton extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
   final String label;
+  final ColorScheme colorScheme;
 
   const _MoodButton({
     required this.emoji,
     required this.isSelected,
     required this.onTap,
     required this.label,
+    required this.colorScheme,
   });
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Tooltip(
       message: label,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          width: 56,
-          height: 56,
-          decoration: BoxDecoration(
-            color: const Color(0xFF2C2C2E),
-            borderRadius: BorderRadius.circular(16),
-            border: isSelected
-                ? Border.all(color: colorScheme.primary, width: 2)
-                : null,
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: colorScheme.primary.withOpacity(0.3),
-                      blurRadius: 8,
-                      spreadRadius: 0,
-                    )
-                  ]
-                : null,
-          ),
-          child: Center(
-            child: Text(
-              emoji,
-              style: const TextStyle(fontSize: 24),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? colorScheme.primary.withOpacity(0.2)
+                  : Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isSelected
+                    ? colorScheme.primary
+                    : Colors.white.withOpacity(0.2),
+                width: isSelected ? 2 : 1,
+              ),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: colorScheme.primary.withOpacity(0.3),
+                        blurRadius: 12,
+                        spreadRadius: 2,
+                      )
+                    ]
+                  : null,
+            ),
+            child: Center(
+              child: Text(
+                emoji,
+                style: TextStyle(
+                  fontSize: isSelected ? 32 : 28,
+                ),
+              ),
             ),
           ),
         ),

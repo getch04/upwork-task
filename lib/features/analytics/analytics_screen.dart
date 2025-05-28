@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:upwork_task/features/dashboard/animated_on_visibility.dart';
 
 import 'widgets/mood_selector.dart';
 
@@ -15,182 +17,265 @@ class AnalyticsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final cardColor = Theme.of(context).cardColor;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1C1C1E),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
           children: [
-            // Header with profile
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage(
-                    'https://i.pravatar.cc/150?img=5',
+            // Modern Header with Profile
+            AnimatedOnVisibility(
+              key: const Key('analytics-header'),
+              delay: 0.ms,
+              slideOffset: const Offset(0, 0.12),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      colorScheme.primary.withOpacity(0.15),
+                      colorScheme.primary.withOpacity(0.05),
+                    ],
                   ),
+                  borderRadius: BorderRadius.circular(28),
                 ),
-                const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      'Welcome back,',
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withOpacity(0.7),
+                    Container(
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: colorScheme.primary.withOpacity(0.5),
+                          width: 2,
+                        ),
+                      ),
+                      child: const CircleAvatar(
+                        radius: 22,
+                        backgroundImage: NetworkImage(
+                          'https://i.pravatar.cc/150?img=5',
+                        ),
                       ),
                     ),
-                    Text(
-                      'Annette',
-                      style: textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                _CircleIconButton(
-                  icon: Icons.notifications_outlined,
-                  onTap: () {},
-                ),
-                const SizedBox(width: 8),
-                _CircleIconButton(
-                  icon: Icons.calendar_today_outlined,
-                  onTap: () {},
-                ),
-              ],
-            ).animate().fadeIn(duration: 300.ms).slideX(
-                  begin: -0.2,
-                  end: 0,
-                  duration: 400.ms,
-                  curve: Curves.easeOutCubic,
-                ),
-
-            const SizedBox(height: 24),
-
-            // Daily Score Card
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFC043),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Daily Score',
-                            style: textTheme.titleLarge?.copyWith(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                            'Welcome back,',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurface.withOpacity(0.6),
                             ),
                           ),
-                          const SizedBox(height: 4),
                           Text(
-                            '4/7 tasks completed',
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: Colors.black.withOpacity(0.7),
+                            'Annette',
+                            style: textTheme.titleMedium?.copyWith(
+                              color: colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
-                      const Spacer(),
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: Stack(
-                          children: [
-                            CircularProgressIndicator(
-                              value: 0.9,
-                              backgroundColor: Colors.black.withOpacity(0.1),
-                              strokeWidth: 8,
-                              color: Colors.black,
-                            ),
-                            Center(
-                              child: Text(
-                                '90%',
-                                style: textTheme.titleMedium?.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                    ),
+                    _ModernIconButton(
+                      icon: Icons.notifications_outlined,
+                      onTap: () {},
+                      color: cardColor,
+                      colorScheme: colorScheme,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // Daily Progress with Radial Gauge
+            AnimatedOnVisibility(
+              key: const Key('analytics-daily-score'),
+              delay: 80.ms,
+              child: Container(
+                height: 280,
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: cardColor,
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorScheme.primary.withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Mood Overview',
+                      style: textTheme.titleLarge?.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                    const SizedBox(height: 24),
+                    Expanded(
+                      child: SfRadialGauge(
+                        animationDuration: 1000,
+                        enableLoadingAnimation: true,
+                        axes: <RadialAxis>[
+                          RadialAxis(
+                            minimum: 0,
+                            maximum: 100,
+                            showLabels: false,
+                            showTicks: false,
+                            startAngle: 270,
+                            endAngle: 270,
+                            radiusFactor: 0.8,
+                            axisLineStyle: AxisLineStyle(
+                              color: colorScheme.primary.withOpacity(0.1),
+                              thickness: 25,
+                              cornerStyle: CornerStyle.bothCurve,
+                            ),
+                            pointers: <GaugePointer>[
+                              RangePointer(
+                                value: 85,
+                                width: 25,
+                                cornerStyle: CornerStyle.bothCurve,
+                                color: colorScheme.primary,
+                              ),
+                            ],
+                            annotations: <GaugeAnnotation>[
+                              GaugeAnnotation(
+                                widget: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '85%',
+                                      style: textTheme.headlineMedium?.copyWith(
+                                        color: colorScheme.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 58),
+                                    Text(
+                                      'Positive Mood Rate',
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        color: colorScheme.onSurface
+                                            .withOpacity(0.6),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                angle: 90,
+                                positionFactor: 0.5,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // Mood Selection with Enhanced Design
+            AnimatedOnVisibility(
+              key: const Key('analytics-mood-selector'),
+              delay: 160.ms,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      colorScheme.primary,
+                      colorScheme.secondary,
                     ],
+                    stops: const [0.0, 1.0],
                   ),
+                  borderRadius: BorderRadius.circular(32),
+                  border: Border.all(
+                    color: colorScheme.primary,
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorScheme.primary.withValues(alpha: 0.5),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.sentiment_satisfied_alt_outlined,
+                          color: colorScheme.primary,
+                          size: 28,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'How are you feeling today?',
+                          style: textTheme.titleMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: MoodSelector(
+                        onMoodSelected: _onMoodSelected,
+                      ),
+                    ).animate().fadeIn(duration: 400.ms).slideY(
+                          begin: 0.2,
+                          duration: 400.ms,
+                          curve: Curves.easeOutCubic,
+                        ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // Activity Grid with Linear Gauges
+            AnimatedOnVisibility(
+              key: const Key('analytics-activity-grid'),
+              delay: 240.ms,
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+                childAspectRatio: 1.1,
+                children: [
+                  for (final activity in _activityData)
+                    _ModernActivityCard(
+                      activity: activity,
+                      colorScheme: colorScheme,
+                      textTheme: textTheme,
+                    ),
                 ],
               ),
-            ).animate().fadeIn(duration: 300.ms).slideY(
-                  begin: 0.2,
-                  end: 0,
-                  duration: 400.ms,
-                  curve: Curves.easeOutCubic,
-                ),
-
-            const SizedBox(height: 32),
-
-            // Mood Selection
-            MoodSelector(onMoodSelected: _onMoodSelected),
-
-            const SizedBox(height: 32),
-
-            // Activity Grid
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 1.5,
-              children: const [
-                _ActivityCard(
-                  title: 'Sleep',
-                  value: '7h 30m',
-                  subtitle: 'Good start, don\'t stop',
-                  icon: Icons.bedtime_outlined,
-                  progress: 0.7,
-                  color: Colors.blue,
-                ),
-                _ActivityCard(
-                  title: 'Sunlight',
-                  value: '3h',
-                  subtitle: 'You\'ve done it!',
-                  icon: Icons.wb_sunny_outlined,
-                  progress: 1.0,
-                  color: Colors.orange,
-                ),
-                _ActivityCard(
-                  title: 'Fasting',
-                  value: '1h 23m',
-                  subtitle: 'Good start, don\'t stop',
-                  icon: Icons.timer_outlined,
-                  progress: 0.3,
-                  color: Colors.green,
-                ),
-                _ActivityCard(
-                  title: 'Supplements',
-                  value: '15 pcs.',
-                  subtitle: 'Good start, don\'t stop',
-                  icon: Icons.medication_outlined,
-                  progress: 0.5,
-                  color: Colors.purple,
-                ),
-              ],
-            ).animate().fadeIn(delay: 400.ms, duration: 300.ms).slideY(
-                  begin: 0.2,
-                  end: 0,
-                  duration: 400.ms,
-                  curve: Curves.easeOutCubic,
-                ),
+            ),
           ],
         ),
       ),
@@ -198,61 +283,76 @@ class AnalyticsScreen extends StatelessWidget {
   }
 }
 
-class _CircleIconButton extends StatelessWidget {
+class _ModernIconButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
+  final Color color;
+  final ColorScheme colorScheme;
 
-  const _CircleIconButton({
+  const _ModernIconButton({
     required this.icon,
     required this.onTap,
+    required this.color,
+    required this.colorScheme,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: const BoxDecoration(
-          color: Color(0xFF2C2C2E),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          icon,
-          color: Colors.white,
-          size: 20,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.9),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: colorScheme.primary.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Icon(
+            icon,
+            color: colorScheme.primary,
+            size: 22,
+          ),
         ),
       ),
     );
   }
 }
 
-class _ActivityCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final String subtitle;
-  final IconData icon;
-  final double progress;
-  final Color color;
+class _ModernActivityCard extends StatelessWidget {
+  final _ActivityData activity;
+  final ColorScheme colorScheme;
+  final TextTheme textTheme;
 
-  const _ActivityCard({
-    required this.title,
-    required this.value,
-    required this.subtitle,
-    required this.icon,
-    required this.progress,
-    required this.color,
+  const _ModernActivityCard({
+    required this.activity,
+    required this.colorScheme,
+    required this.textTheme,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF2C2C2E),
-        borderRadius: BorderRadius.circular(24),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: activity.color.withOpacity(0.08),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,53 +360,118 @@ class _ActivityCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
-                  shape: BoxShape.circle,
+                  color: activity.color.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Icon(
-                  icon,
-                  color: color,
-                  size: 20,
+                  activity.icon,
+                  color: activity.color,
+                  size: 22,
                 ),
               ),
               const Spacer(),
-              SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(
-                  value: progress,
-                  backgroundColor: Colors.white.withOpacity(0.1),
-                  strokeWidth: 3,
-                  color: color,
+              Text(
+                '${(activity.progress * 100).toInt()}%',
+                style: textTheme.titleMedium?.copyWith(
+                  color: activity.color,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
           const Spacer(),
+          SfLinearGauge(
+            minimum: 0,
+            maximum: 100,
+            showLabels: false,
+            showTicks: false,
+            animationDuration: 1000,
+            barPointers: [
+              LinearBarPointer(
+                value: activity.progress * 100,
+                color: activity.color,
+                thickness: 8,
+                edgeStyle: LinearEdgeStyle.bothCurve,
+              ),
+            ],
+            axisTrackStyle: LinearAxisTrackStyle(
+              color: activity.color.withOpacity(0.1),
+              thickness: 8,
+              edgeStyle: LinearEdgeStyle.bothCurve,
+            ),
+          ),
+          const SizedBox(height: 16),
           Text(
-            value,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+            activity.value,
+            style: textTheme.titleMedium?.copyWith(
+              color: colorScheme.onSurface,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
-            title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withOpacity(0.7),
-                ),
-          ),
-          Text(
-            subtitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white.withOpacity(0.5),
-                ),
+            activity.title,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurface.withOpacity(0.6),
+            ),
           ),
         ],
       ),
     );
   }
 }
+
+class _ActivityData {
+  final String title;
+  final String value;
+  final String subtitle;
+  final IconData icon;
+  final double progress;
+  final Color color;
+
+  const _ActivityData({
+    required this.title,
+    required this.value,
+    required this.subtitle,
+    required this.icon,
+    required this.progress,
+    required this.color,
+  });
+}
+
+const List<_ActivityData> _activityData = [
+  _ActivityData(
+    title: 'Mood Streak',
+    value: '7 days',
+    subtitle: "Keep tracking your mood!",
+    icon: Icons.mood_outlined,
+    progress: 0.7,
+    color: Colors.blue,
+  ),
+  _ActivityData(
+    title: 'Reflections',
+    value: '12',
+    subtitle: "Written this week",
+    icon: Icons.edit_note_outlined,
+    progress: 0.8,
+    color: Colors.purple,
+  ),
+  _ActivityData(
+    title: 'Happy Days',
+    value: '5 days',
+    subtitle: "This week",
+    icon: Icons.sentiment_very_satisfied_outlined,
+    progress: 0.71,
+    color: Colors.orange,
+  ),
+  _ActivityData(
+    title: 'Goals Met',
+    value: '3/5',
+    subtitle: "Weekly progress",
+    icon: Icons.stars_outlined,
+    progress: 0.6,
+    color: Colors.green,
+  ),
+];
